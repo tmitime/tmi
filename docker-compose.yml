@@ -1,0 +1,23 @@
+## Local dev
+
+mariadb:
+  image: mariadb:10
+  environment:
+    MYSQL_DATABASE: tmi
+    MYSQL_USER: tmi
+    MYSQL_ROOT_PASSWORD: root_root
+    MYSQL_PASSWORD: root
+  ports:
+    - "3306:3306"
+
+# mariadb_test:
+#   image: mariadb:10
+#   environment:
+#     MYSQL_DATABASE: dms_test
+#     MYSQL_USER: dms
+#     MYSQL_ROOT_PASSWORD: 2381aa6a99bee6ff61c2209ef4373887
+#     MYSQL_PASSWORD: dms
+#   volumes: 
+#     - "/var/lib/mysql"
+#   ports:
+#     - "3307:3306"
