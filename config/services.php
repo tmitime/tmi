@@ -34,7 +34,7 @@ return [
         'client_id' => env('GITLAB_CLIENT_ID'),
         'client_secret' => env('GITLAB_CLIENT_SECRET'),
         'redirect' => null, // set in the controller to use the route helper
-        'instance_uri' => 'https://gitlab.com/'
+        'instance_uri' => env('GITLAB_INSTANCE_URI', 'https://gitlab.com/')
     ],
 
 ];
