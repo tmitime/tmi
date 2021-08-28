@@ -88,6 +88,11 @@ class TaskController extends Controller
     {
         $this->authorize($task);
 
+        // since we can arrive to the edit page from
+        // different locations, we store the
+        // arrival path to redirect back
+        redirect()->setIntendedUrl(url()->previous());
+
         return view('tasks.edit', [
             'project' => $task->project,
             'task' => $task,
@@ -125,7 +130,7 @@ class TaskController extends Controller
         $task->save();
 
         return redirect()
-            ->route('projects.show', $task->project)
+            ->intended(route('projects.show', $task->project))
             ->with('flash.banner', __('Task updated'));
     }
 
