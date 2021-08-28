@@ -15,7 +15,10 @@
         </h2>
 
         @can('create', \App\Models\Task::class)
-            <x-button-link href="{{ route('tasks.create') }}" >
+            @php
+                $prj = optional($filters['project'] ?? null)->uuid
+            @endphp
+            <x-button-link href="{{ route('tasks.create', $prj ? ['project' => $prj] : []) }}" >
                 {{ __('Track a task') }}
             </x-button-link>
         @endcan

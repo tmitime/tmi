@@ -2,6 +2,8 @@
 
 namespace App\Policies;
 
+use App\Models\Member;
+use App\Models\Project;
 use App\Models\Task;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -39,9 +41,13 @@ class TaskPolicy
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user)
+    public function create(User $user, Project $project = null)
     {
-        return true;
+        if(is_null($project)){
+            return true;
+        }
+
+        return $project->hasMember($user, [Member::ROLE_DEVELOPER, Member::ROLE_OWNER]);
     }
 
     /**

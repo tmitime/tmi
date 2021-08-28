@@ -46,9 +46,15 @@ class TaskController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        $this->authorize(Task::class);
+        $project = $request->has('project') ? Project::findUsingRouteKey($request->input('project')) : null;
+
+        $this->authorize([Task::class, $project]);
+
+        return view('tasks.create', [
+            'project' => $project,
+        ]);
     }
 
     /**
@@ -59,7 +65,46 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        $this->authorize(Task::class);
+        // if a project is already specified
+        // we must ensure that the user
+        // can create a task inside it
+
+        $projectValidated = $this->validate($request, [
+            'project' => 'nullable|uuid|exists:projects,uuid',
+        ]);
+
+        $project = $projectValidated['project'] ? Project::findUsingRouteKey($projectValidated['project']) : null;
+        
+        $this->authorize([Task::class, $project]);
+
+        $validated = $this->validate($request, [
+            'description' => 'required|string|max:250',
+            'duration' => 'required|integer|min:1',
+            'created_at_date' => $project ? 'required|date|after_or_equal:' . $project->start_at->toDateString() : 'required|date',
+            'created_at_time' => 'required|date_format:H:i:s', // this should accept strings like 16:40 (hours and minutes) and 16:40:10 (hours, minutes and seconds)
+            'type' => 'required|string|max:250|in:tmi:Task,tmi:Meeting',
+        ]);
+
+        $task = new Task(Arr::only($validated, ['duration', 'type', 'description']));
+
+        $creation_date = Carbon::parse("{$validated['created_at_date']} {$validated['created_at_time']}");
+        $task->created_at = $creation_date;
+
+        $task->user_id = $request->user()->getKey();
+
+        if($project){
+            $project->tasks()->save($task);
+        }
+        else {
+            $task->save();
+        }
+
+
+
+        return redirect()
+            ->route('tasks.index', $project ? ['project' => $project] : [])
+            ->with('flash.banner', __('Task added'));
+
     }
 
     /**
@@ -130,7 +175,7 @@ class TaskController extends Controller
         $task->save();
 
         return redirect()
-            ->intended(route('projects.show', $task->project))
+            ->intended(route('tasks.index', ['project' => $task->project]))
             ->with('flash.banner', __('Task updated'));
     }
 

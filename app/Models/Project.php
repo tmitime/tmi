@@ -59,6 +59,9 @@ class Project extends Model
         return $this->members()
             ->wherePivot('user_id', $user->getKey())
             ->when($role, function($query, $r) use($role){
+                if(is_array($role)){
+                    return $query->whereIn('members.role', $role);
+                }
                 return $query->where('members.role', $role);
             })
             ->exists();
