@@ -18,9 +18,14 @@
             @php
                 $prj = optional($filters['project'] ?? null)->uuid
             @endphp
-            <x-button-link href="{{ route('tasks.create', $prj ? ['project' => $prj] : []) }}" >
-                {{ __('Track a task') }}
-            </x-button-link>
+            <div class="space-x-2">
+                <x-button-link href="{{ route('tasks.create', $prj ? ['project' => $prj] : []) }}" >
+                    {{ __('Track a task') }}
+                </x-button-link>
+                <x-button-link href="{{ route('tasks.import.create', $prj ? ['project' => $prj] : []) }}" >
+                    {{ __('Import tasks') }}
+                </x-button-link>
+            </div>
         @endcan
     </x-slot>
 

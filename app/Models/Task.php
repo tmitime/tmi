@@ -17,6 +17,7 @@ class Task extends Model
         'user_id',
         'project_id',
         'type',
+        'created_at',
     ];
 
     /**
