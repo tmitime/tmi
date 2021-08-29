@@ -7,12 +7,15 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <ul class="list-disc">
-                <li>Option to create a new tracking timer</li>
-                <li>Option to quickly add a tracked time to a project</li>
-                <li>Show how's going your day</li>
-                <li></li>
-            </ul>
+
+            <div class="grid grid-cols-3 gap-6">
+                @forelse ($projects as $project)
+                    <x-project-card :project="$project" />
+                @empty
+                    @include('projects.partials.empty-list')
+                @endforelse
+            </div>
+
         </div>
     </div>
 </x-app-layout>

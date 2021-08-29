@@ -33,7 +33,7 @@
                             @endif
                         </div>
                         <div>
-                            <x-time :time="$project->start_at" /> &mdash; <x-time :time="$project->end_at" default="{{ __('unknown') }}" />
+                            <x-time :time="$project->start_at" /> &mdash; <x-time :time="$project->end_at" default="{{ __('present') }}" />
                         </div>
                         <div>
                             @foreach ($project->members as $member)
@@ -45,24 +45,7 @@
 
                 @empty
                     
-                    <div class="col-span-5 p-8">
-        
-                        <p class="font-bold">
-                            {{ __('No projects') }}
-                        </p>
-
-                        @can('create', \App\Models\Project::class)
-                            <p class="text-gray-600">{{ __('Get started by creating a new project') }}</p>
-                            
-                            <x-button-link href="{{ route('projects.create') }}" >
-                                {{ __('New project') }}
-                            </x-button-link>
-                        @else
-                            <p class="text-gray-600">{{ __('Hopefully you\'ll be invited to a project soon') }}</p>
-                        @endcan
-                    </div>
-
-
+                    @include('projects.partials.empty-list')
 
                 @endforelse
             </div>
