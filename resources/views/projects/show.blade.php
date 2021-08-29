@@ -59,7 +59,7 @@
                     <livewire:project-tasks-stats-meter :project="$project" />
 
                 </div>
-                <div class="">
+                <div class="pb-6 md:border-b border-gray-300">
                     <h3 class="font-bold mb-3">{{ __('Members') }}</h3>
                     <div class="flex justify-between items-center">
                         @foreach ($project->members as $member)
@@ -68,6 +68,10 @@
 
                         @endforeach
                     </div>
+                </div>
+                <div>
+                    <x-jet-label>{{ __('Reference') }}</x-jet-label>
+                    <code class="w-full whitespace-nowrap overflow-ellipsis">{{ $project->uuid }}</code>
                 </div>
             </div>
         </div>
