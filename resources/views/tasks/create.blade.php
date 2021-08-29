@@ -23,8 +23,7 @@
             @csrf
 
             <div class="">
-                <x-jet-label for="project" value="{{ __('Project') }}" />
-                <x-jet-input id="project" class="block mt-1 w-full" type="text" name="project" :value="old('project', optional($project)->uuid)" required />
+                <livewire:project-input :selectedProject="old('project', optional($project)->uuid)" />
                 <x-jet-input-error for="project" class="mt-2" />
             </div>
 
