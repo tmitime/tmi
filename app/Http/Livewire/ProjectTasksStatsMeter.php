@@ -41,8 +41,8 @@ class ProjectTasksStatsMeter extends Component
         $others = $this->project->tasks()->notMeeting()->count();
 
         $this->stats = [
-            'meetings' => (100*$meetings) / $total,
-            'tasks' => (100*$others) / $total,
+            'meetings' => $total > 0 ? (100*$meetings) / $total : 0,
+            'tasks' => $total > 0 ? (100*$others) / $total : 0,
         ];
     }
 
