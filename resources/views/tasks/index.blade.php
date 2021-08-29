@@ -49,7 +49,9 @@
                             @endif
                         </a>
                     </div>
-                    <div><a class="underline" href="{{ route('projects.show', $task->project) }}">{{ $task->project->name }}</a></div>
+                    <div>@if ($task->project)
+                        <a class="underline" href="{{ route('projects.show', $task->project) }}">{{ $task->project->name }}</a>
+                    @endif</div>
                     <div><x-time :time="$task->created_at" /> {!! $task->is_edited ? '<abbr title="Updated after creation">*</abbr>':'' !!}</div>
                 </div>
                     

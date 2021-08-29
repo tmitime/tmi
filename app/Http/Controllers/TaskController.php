@@ -82,7 +82,7 @@ class TaskController extends Controller
             'duration' => 'required|integer|min:1',
             'created_at_date' => $project ? 'required|date|after_or_equal:' . $project->start_at->toDateString() : 'required|date',
             'created_at_time' => 'required|date_format:H:i:s', // this should accept strings like 16:40 (hours and minutes) and 16:40:10 (hours, minutes and seconds)
-            'type' => 'required|string|max:250|in:tmi:Task,tmi:Meeting',
+            'type' => 'nullable|string|max:250|in:tmi:Task,tmi:Meeting',
         ]);
 
         $task = new Task(Arr::only($validated, ['duration', 'type', 'description']));
@@ -92,14 +92,14 @@ class TaskController extends Controller
 
         $task->user_id = $request->user()->getKey();
 
+        $task->type = $task->type ?? 'tmi:Task';
+
         if($project){
             $project->tasks()->save($task);
         }
         else {
             $task->save();
         }
-
-
 
         return redirect()
             ->route('tasks.index', $project ? ['project' => $project] : [])
@@ -190,6 +190,12 @@ class TaskController extends Controller
         $this->authorize($task);
 
         $task->delete();
+
+        if(! $task->project){
+            return redirect()
+                ->route('tasks.index')
+                ->with('flash.banner', __('Task deleted'));
+        }
 
         return redirect()
             ->route('projects.show', $task->project)

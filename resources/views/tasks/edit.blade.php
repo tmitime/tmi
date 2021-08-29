@@ -1,7 +1,10 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            <a href="{{ route('projects.show', $project) }}">{{ __(':project', ['project' => $project->name]) }}</a> / <a href="{{ route('tasks.index', ['project' => $project]) }}">{{ __('Tasks') }}</a> / {{ __('Edit task') }}
+            @if ($project)
+            <a href="{{ route('projects.show', $project) }}">{{ __(':project', ['project' => $project->name]) }}</a> /    
+            @endif
+             <a href="{{ route('tasks.index', ['project' => $project]) }}">{{ __('Tasks') }}</a> / {{ __('Edit task') }}
         </h2>
     </x-slot>
 
