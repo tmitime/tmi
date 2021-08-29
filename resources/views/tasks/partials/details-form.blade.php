@@ -14,12 +14,12 @@
     <x-jet-label for="created_at_date" value="{{ __('Done on') }}" />
     
     <div class="flex space-x-2">
-        <div>
+        <div class="w-1/3">
             <x-jet-input id="created_at_date" class="block mt-1 w-full" type="date" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" name="created_at_date" :value="old('created_at_date', optional(optional($task ?? null)->created_at)->toDateString()) ?? now()->toDateString()" required />
             <x-jet-input-error for="created_at_date" class="mt-2" />
             <p class="mt-1 text-sm text-gray-600">{{ __('Format:') }} <code class="">YYYY-MM-DD</code></p>
         </div>
-        <div>
+        <div class="w-1/3">
             <x-jet-input id="created_at_time" class="block mt-1 w-full" type="time" step="15" pattern="[0-9]{2}:[0-9]{2}:[0-9]{2}" name="created_at_time" :value="old('created_at_time', optional(optional($task ?? null)->created_at)->format('H:i:s')) ?? now()->format('H:i:s')" required />
             <x-jet-input-error for="created_at_time" class="mt-2" />
             <p class="mt-1 text-sm text-gray-600">{{ __('Format:') }} <code class="">HH:MM:SS</code></p>
