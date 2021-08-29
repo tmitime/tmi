@@ -71,7 +71,7 @@
                 </div>
                 <div>
                     <x-jet-label>{{ __('Reference') }}</x-jet-label>
-                    <code class="w-full whitespace-nowrap overflow-ellipsis">{{ $project->uuid }}</code>
+                    <code class="w-full whitespace-nowrap">{{ $project->uuid }}</code>
                 </div>
             </div>
         </div>
