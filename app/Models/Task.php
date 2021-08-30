@@ -68,6 +68,22 @@ class Task extends Model
             ->where('created_at', '<=', $end);
     }
 
+    public function scopeSummaryByDay($query)
+    {
+        return $query
+            ->selectRaw('date_format(created_at, "%w") as step, date_format(created_at, "%Y-%m-%d") as day, COUNT(*) AS tasks, SUM(duration) as time')
+            ->groupBy(['step', 'day'])
+            ->orderBy('day', 'asc');
+    }
+    
+    public function scopeSummaryByMonth($query)
+    {
+        return $query
+            ->selectRaw('date_format(created_at, "%Y-%m") as month, COUNT(*) AS tasks, SUM(duration) as time')
+            ->groupBy('month')
+            ->orderBy('month', 'asc');
+    }
+
 
     /**
      * Check if task was updated after creation

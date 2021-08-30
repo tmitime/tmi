@@ -44,9 +44,7 @@ class ProjectSummary extends Component
     {
         $this->entries = $this->project->tasks()
             ->period($this->start_date, $this->end_date)
-            ->selectRaw('date_format(created_at, "%w") as step, date_format(created_at, "%M-%D") as day, COUNT(*) AS tasks, SUM(duration) as time')
-            ->groupBy(['step', 'day'])
-            ->orderBy('day', 'asc')
+            ->summaryByDay()
             ->get();
     }
 
