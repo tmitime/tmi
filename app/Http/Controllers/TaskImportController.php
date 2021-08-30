@@ -62,6 +62,10 @@ class TaskImportController extends Controller
 
         $data = collect(Str::of($validated['tasks'])->split('/[\n\r]+/'))->map(function($line){
             
+            if(empty($line)){
+                return null;
+            }
+
             $parsedLine = str_getcsv($line, ';');
             
             return [
@@ -70,7 +74,7 @@ class TaskImportController extends Controller
                 'duration' => (float)$parsedLine[2] ?? null,
                 'description' => $parsedLine[3] ?? null,
             ];
-        });
+        })->filter();
 
         $validator = Validator::make(
             ['tasks' => $data->toArray()],
