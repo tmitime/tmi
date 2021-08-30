@@ -75,7 +75,7 @@ class TaskImportController extends Controller
         $validator = Validator::make(
             ['tasks' => $data->toArray()],
             [
-                'tasks.*.description' => 'required|string|max:250',
+                'tasks.*.description' => 'required|string|max:2500',
                 'tasks.*.duration' => 'required|numeric|min:0',
                 'tasks.*.unit' => 'required|string|in:h,m',
                 'tasks.*.date' => 'required|date|after_or_equal:' . $project->start_at->toDateString(),

@@ -20,7 +20,7 @@ class TrackActivity extends Component
     // public $description;
 
     protected $rules = [
-        'task.description' => 'nullable|string',
+        'task.description' => 'nullable|string|max:2500',
         'task.duration' => 'required|integer|min:1',
     ];
 

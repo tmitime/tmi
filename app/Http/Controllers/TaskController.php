@@ -78,7 +78,7 @@ class TaskController extends Controller
         $this->authorize([Task::class, $project]);
 
         $validated = $this->validate($request, [
-            'description' => 'required|string|max:250',
+            'description' => 'required|string|max:2500',
             'duration' => 'required|integer|min:1',
             'created_at_date' => $project ? 'required|date|after_or_equal:' . $project->start_at->toDateString() : 'required|date',
             'created_at_time' => 'required|date_format:H:i:s', // this should accept strings like 16:40 (hours and minutes) and 16:40:10 (hours, minutes and seconds)
