@@ -114,22 +114,13 @@ class TaskImportController extends Controller
 
         $toCreate = collect($validator->validated()['tasks'])->map(function($d) use($request){
             return [
-                'created_at' => Carbon::parse("{$d['date']} 09:00"),
+                'created_at' => Str::contains($d['date'], ':') ? Carbon::parse($d['date']) : Carbon::parse("{$d['date']} 09:00"),
                 'duration' => $d['unit'] === 'h' ? $d['duration'] * Carbon::MINUTES_PER_HOUR : $d['duration'],
                 'type' => 'tmi:Task',
                 'description' => e($d['description']),
                 'user_id' => $request->user()->getKey(),
             ];
         });
-
-        // $task = new Task(Arr::only($validated, ['duration', 'type', 'description']));
-
-        // $creation_date = Carbon::parse("{$validated['created_at_date']} {$validated['created_at_time']}");
-        // $task->created_at = $creation_date;
-
-        // $task->user_id = ;
-
-        // $task->type = $task->type ?? 'tmi:Task';
 
         $project->tasks()->createMany($toCreate->toArray());
 
