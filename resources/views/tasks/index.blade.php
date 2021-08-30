@@ -7,7 +7,11 @@
                 <span class="font-normal text-gray-600">
                     {
                     @foreach ($filters as $filter => $value)
-                        {{ $filter }} = " {{ $value->name ?? 'all' }} "
+                        @if ($value instanceof \App\Models\Project)
+                        {{ $filter }} = " <a href="{{ route('projects.show', $value) }}" class="underline">{{ $value->name ?? 'all' }}</a> "
+                        @else
+                            {{ $filter }} = " {{ $value->name ?? 'all' }} "
+                        @endif
                     @endforeach
                     }
                 </span>

@@ -70,6 +70,18 @@
                     </div>
                 </div>
                 <div>
+
+                    <h3 class="font-bold mb-3">{{ __('Actions') }}</h3>
+
+                    <ul class="mb-4 flex flex-col space-y-2">
+                        <li>
+                            <a class="underline" href="{{ route('tasks.index', ['project' => $project]) }}">{{ __('View all tasks') }}</a>
+                        </li>
+                        <li>
+                            <a class="underline" href="{{ route('tasks.import.create', ['project' => $project]) }}">{{ __('Import tasks') }}</a>
+                        </li>
+                    </ul>
+
                     <x-jet-label>{{ __('Reference') }}</x-jet-label>
                     <code class="w-full whitespace-nowrap">{{ $project->uuid }}</code>
                 </div>

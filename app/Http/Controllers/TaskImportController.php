@@ -117,7 +117,7 @@ class TaskImportController extends Controller
                 'created_at' => Str::contains($d['date'], ':') ? Carbon::parse($d['date']) : Carbon::parse("{$d['date']} 09:00"),
                 'duration' => $d['unit'] === 'h' ? $d['duration'] * Carbon::MINUTES_PER_HOUR : $d['duration'],
                 'type' => 'tmi:Task',
-                'description' => e($d['description']),
+                'description' => $d['description'],
                 'user_id' => $request->user()->getKey(),
             ];
         });
