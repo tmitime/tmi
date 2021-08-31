@@ -1,39 +1,84 @@
 
-## About TMI
+# About TMI
 
-TMI is a time tracker designed to help you stay on track during a consultancy.
+TMI (tmaɪ) is a time tracker designed to help you stay on track during a consultancy.
 
-- Can be connected to Gitlab to fetch projects and tasks
-- If you have contracting slots, you can define a weekly schedule
-- Tracking is done server side, start your timer on one device and continue on the other
-- Scrum ready, tag meetings with scrum specific naming  
-- Define your custom labels
+If you used an Excel sheet in the past to track activities you know that at some
+point tasks are insterted in batches and formulas were required to understand
+at which progress of the project or consultancy you are just to find out that
+you worked more hours than planned.
+
+Time tracking should be simple and integrated in your workflow. 
+
+🚧 **TMI is a work in progress**. Please, try it out and report back using [Discussions](https://github.com/tmitime/tmi/discussions).
 
 
-## Mapping to ontologies
+**Current features**
 
-- tmi:Meeting => schema:Event => 
-|- scrum:Daily == scrum:Standup  == scrum:DailyScrum
-|- scrum:Planning == scrum:SprintPlanning
-|- scrum:Review == scrum:SprintReview
-|- scrum:Retrospective == scrum:SprintRetrospective
-|- scrum:Grooming == scrum:ProductBacklogRefinement == scrum:BacklogRefinement
+- Projects, a container for the tasks (or activities) you track
+- Tasks define the activity and how many minutes or hours you worked on it 
+- Check a project status using the summary views 
+- One tag (`tmi:Task` or `tmi:Meeting`) for each task to not be overwhelmed on the categorization of each task
 
-- schema:ReviewAction || schema:OrganizeAction
-|- tmi:RefinementAction, the action to refine the backlog or an issue, if done alone and not in a meeting
+**Considered features**
 
-|- scrum:Sprint
+- Connection to Gitlab to synchronize projects and tasks
+- Define a work hours schedule on a project basis, useful in case by contract you have defined slots
+- Timers shared across devices, start your timer on one device and continue on the other
+- Scrum ready, include in the tags hierarchy scrum specific naming
+- Auto-tagging based on task description, you should not waste time applying tags to tasks
+- Teams to group projects together, especially useful if you have more that one project with a client
 
-- tmi:Task inherit from schema:CreativeWork and schema:Action
- -- startTime
- -- endTime
- -- duration: schema:Duration
- -- agent: Person => User
- -- identifier => UUID
- -- description => 
- -- object:Thing => schema:Project || schema:CreativeWork
- -- actionStatus => ActionStatusType => CompletedActionStatus or ActiveActionStatus
+## Installation
 
+_to be documented_
+
+
+## Usage
+
+_to be documented_
+
+
+## Development
+
+### Getting started
+
+TMI is built using the [Laravel framework](https://laravel.com/) and 
+[Jetstream](https://jetstream.laravel.com/2.x/introduction.html). 
+[Livewire](https://laravel-livewire.com/) is used to deliver dynamic
+components, while [TailwindCSS](https://tailwindcss.com/) powers
+the UI styling.
+
+Given the selected stack TMI requires:
+
+- [PHP 7.4](https://www.php.net/) or above
+- [Composer 2](https://getcomposer.org/)
+- [NodeJS](https://nodejs.org/en/) version 12 or above with [Yarn](https://classic.yarnpkg.com/en/docs/install) package manager (v1.x)
+- [MariaDB](https://mariadb.org/) version 10.6 or above
+- [Docker](https://www.docker.com/)
+
+### Testing
+
+```
+composer test
+```
+
+## Changelog
+
+Please see [CHANGELOG](./CHANGELOG.md) for more information on what has changed recently.
+
+## Contributing
+
+Please see [CONTRIBUTING](./.github/CONTRIBUTING.md) for details.
+
+## Security Vulnerabilities
+
+Please review [our security policy](https://github.com/tmitime/tmi/security/policy) on how to report security vulnerabilities.
+
+## Credits
+
+- [Alessio](https://github.com/avvertix)
+- [All Contributors](https://github.com/tmitime/tmi/contributors)
 
 ## License
 
