@@ -1,0 +1,74 @@
+name: CI
+
+on: 
+  push:
+    branches: 
+      - "master"
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  phpunit:
+    name: Tests PHP ${{ matrix.php }}
+    runs-on: ubuntu-latest
+    container: 
+      image: klinktech/k-box-ci-pipeline-php:${{ matrix.php }}
+      options: --user root 
+
+    services:
+      mariadb:
+        image: mariadb:10.6
+        env:
+          MYSQL_DATABASE: laravel
+          MYSQL_USER: forge
+          MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: "yes"
+          MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+          MYSQL_INITDB_SKIP_TZINFO: 1
+        ports:
+          - 3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    strategy:
+      fail-fast: true
+      matrix:
+        php: [7.4]
+    
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 1
+    
+    - name: Cache dependencies
+      uses: actions/cache@v1
+      with:
+        path: ~/.composer/cache/files
+        key: dependencies-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
+
+    - name: Cache JS dependencies
+      uses: actions/cache@v1
+      with:
+        path: ~/.yarn/
+        key: dependencies-js-${{ matrix.php }}-yarn-${{ hashFiles('yarn.lock') }}
+    
+    - name: Cache binaries
+      uses: actions/cache@v1
+      with:
+        path: bin
+        key: binaries-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
+      
+    - name: Prepare environment
+      run: |
+        rm -f /usr/local/etc/php/conf.d/docker-php-ext-pcov.ini
+        cp .env.example .env
+        composer install --prefer-dist
+        yarn config set cache-folder ~/.yarn/
+        yarn
+        yarn run production
+        
+    - name: Run Testsuite
+      run: |
+        php artisan view:clear
+        php artisan config:clear
+        php artisan route:clear
+        php artisan migrate --env=testing --seed --force
+        vendor/bin/phpunit --verbose
