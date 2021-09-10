@@ -57,6 +57,8 @@ jobs:
         key: binaries-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
       
     - name: Prepare environment
+      env:
+        DB_HOST: mariadb
       run: |
         rm -f /usr/local/etc/php/conf.d/docker-php-ext-pcov.ini
         cp .env.example .env
