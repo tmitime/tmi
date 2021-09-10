@@ -21,7 +21,7 @@ jobs:
         env:
           MYSQL_DATABASE: forge
           MYSQL_USER: forge
-          MYSQL_PASSWORD: 
+          MYSQL_PASSWORD: forge
           MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: yes
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
           MYSQL_INITDB_SKIP_TZINFO: 1
@@ -58,8 +58,6 @@ jobs:
         key: binaries-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
       
     - name: Prepare environment
-      env:
-        DB_HOST: mariadb
       run: |
         rm -f /usr/local/etc/php/conf.d/docker-php-ext-pcov.ini
         composer install --prefer-dist
@@ -70,6 +68,7 @@ jobs:
     - name: Run Testsuite
       env:
         DB_HOST: mariadb
+        DB_PASSWORD: forge
       run: |
         php artisan view:clear
         php artisan config:clear
