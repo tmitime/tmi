@@ -21,8 +21,9 @@ jobs:
         env:
           MYSQL_DATABASE: forge
           MYSQL_USER: forge
-          MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: "yes"
-          MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+          MYSQL_PASSWORD: 
+          MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: yes
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
           MYSQL_INITDB_SKIP_TZINFO: 1
         ports:
           - 3306
