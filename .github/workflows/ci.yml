@@ -19,7 +19,7 @@ jobs:
       mariadb:
         image: mariadb:10.6
         env:
-          MYSQL_DATABASE: laravel
+          MYSQL_DATABASE: forge
           MYSQL_USER: forge
           MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: "yes"
           MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
@@ -61,13 +61,14 @@ jobs:
         DB_HOST: mariadb
       run: |
         rm -f /usr/local/etc/php/conf.d/docker-php-ext-pcov.ini
-        cp .env.example .env
         composer install --prefer-dist
         yarn config set cache-folder ~/.yarn/
         yarn
         yarn run production
         
     - name: Run Testsuite
+      env:
+        DB_HOST: mariadb
       run: |
         php artisan view:clear
         php artisan config:clear
