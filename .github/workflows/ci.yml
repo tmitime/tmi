@@ -70,6 +70,8 @@ jobs:
         DB_HOST: mariadb
         DB_PASSWORD: forge
       run: |
+        echo "APP_KEY=" > .env
+        php artisan key:generate
         php artisan view:clear
         php artisan config:clear
         php artisan route:clear
