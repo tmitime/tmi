@@ -31,28 +31,28 @@ SETUP_USER=www-data
 
 function startup_config () {
     echo "Starting..."
-    echo "- Writing php configuration..."
+    # echo "- Writing php configuration..."
 
-    if [ -z "$PHP_POST_MAX_SIZE" ]; then
-        # calculating the post max size based on the upload limit
-        PHP_POST_MAX_SIZE_CALCULATION=$((UPLOAD_LIMIT+20048))
-        PHP_POST_MAX_SIZE="${PHP_POST_MAX_SIZE_CALCULATION}K"
-    fi
+    # if [ -z "$PHP_POST_MAX_SIZE" ]; then
+    #     # calculating the post max size based on the upload limit
+    #     PHP_POST_MAX_SIZE_CALCULATION=$((UPLOAD_LIMIT+20048))
+    #     PHP_POST_MAX_SIZE="${PHP_POST_MAX_SIZE_CALCULATION}K"
+    # fi
 
-    if [ -z "$PHP_UPLOAD_MAX_FILESIZE" ]; then
-        # calculating the upload max filesize based on the upload limit
-        PHP_UPLOAD_MAX_FILESIZE_CALCULATION=$((UPLOAD_LIMIT+2048))
-        PHP_UPLOAD_MAX_FILESIZE="${PHP_UPLOAD_MAX_FILESIZE_CALCULATION}K"
-    fi
+    # if [ -z "$PHP_UPLOAD_MAX_FILESIZE" ]; then
+    #     # calculating the upload max filesize based on the upload limit
+    #     PHP_UPLOAD_MAX_FILESIZE_CALCULATION=$((UPLOAD_LIMIT+2048))
+    #     PHP_UPLOAD_MAX_FILESIZE="${PHP_UPLOAD_MAX_FILESIZE_CALCULATION}K"
+    # fi
     
-    # Set post and upload size for php if customized for the specific deploy
-    cat > /usr/local/etc/php/conf.d/php-runtime.ini <<-EOM &&
-		post_max_size=${PHP_POST_MAX_SIZE}
-        upload_max_filesize=${PHP_UPLOAD_MAX_FILESIZE}
-        memory_limit=${PHP_MEMORY_LIMIT}
-        max_input_time=${PHP_MAX_INPUT_TIME}
-        max_execution_time=${PHP_MAX_EXECUTION_TIME}
-	EOM
+    # # Set post and upload size for php if customized for the specific deploy
+    # cat > /usr/local/etc/php/conf.d/php-runtime.ini <<-EOM &&
+	# 	post_max_size=${PHP_POST_MAX_SIZE}
+    #     upload_max_filesize=${PHP_UPLOAD_MAX_FILESIZE}
+    #     memory_limit=${PHP_MEMORY_LIMIT}
+    #     max_input_time=${PHP_MAX_INPUT_TIME}
+    #     max_execution_time=${PHP_MAX_EXECUTION_TIME}
+	# EOM
 
     write_config &&
     init_empty_dir $DIR/storage && 
