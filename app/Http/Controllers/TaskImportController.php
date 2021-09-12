@@ -73,6 +73,7 @@ class TaskImportController extends Controller
                 'unit' => $parsedLine[1] ?? null,
                 'duration' => (float)$parsedLine[2] ?? null,
                 'description' => $parsedLine[3] ?? null,
+                'type' => $parsedLine[4] ?? null,
             ];
         })->filter();
 
@@ -83,6 +84,7 @@ class TaskImportController extends Controller
                 'tasks.*.duration' => 'required|numeric|min:0',
                 'tasks.*.unit' => 'required|string|in:h,m',
                 'tasks.*.date' => 'required|date|after_or_equal:' . $project->start_at->toDateString(),
+                'tasks.*.type' => 'nullable|string|max:200|in:tmi:Task,tmi:Meeting',
             ],
             [],
             [
@@ -90,6 +92,7 @@ class TaskImportController extends Controller
                 'tasks.*.duration' => 'duration',
                 'tasks.*.unit' => 'unit',
                 'tasks.*.date' => 'date',
+                'tasks.*.type' => 'type',
             ]
         );
         
@@ -116,7 +119,7 @@ class TaskImportController extends Controller
             return [
                 'created_at' => Str::contains($d['date'], ':') ? Carbon::parse($d['date']) : Carbon::parse("{$d['date']} 09:00"),
                 'duration' => $d['unit'] === 'h' ? $d['duration'] * Carbon::MINUTES_PER_HOUR : $d['duration'],
-                'type' => 'tmi:Task',
+                'type' => $d['type'] ?? 'tmi:Task',
                 'description' => $d['description'],
                 'user_id' => $request->user()->getKey(),
             ];

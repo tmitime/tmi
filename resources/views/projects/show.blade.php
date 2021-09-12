@@ -80,6 +80,9 @@
                         <li>
                             <a class="underline" href="{{ route('tasks.import.create', ['project' => $project]) }}">{{ __('Import tasks') }}</a>
                         </li>
+                        <li>
+                            <a class="underline" target="_blank" href="{{ route('tasks.export.show', ['project' => $project]) }}">{{ __('Export tasks') }}</a>
+                        </li>
                     </ul>
 
                     <x-jet-label>{{ __('Reference') }}</x-jet-label>
