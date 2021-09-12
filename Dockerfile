@@ -11,8 +11,10 @@ USER root
 RUN \
     rm -f /usr/local/etc/php/conf.d/docker-php-ext-pcov.ini
 USER $IMAGE_USER
+ENV APP_ENV production
+WORKDIR /var/www
 
-COPY --chown=php:php . /var/www/html
+COPY --chown=php:php . /var/www
 RUN \
     mkdir bin &&\
     mkdir -p "storage/app/projects/avatars" &&\
@@ -41,6 +43,7 @@ LABEL maintainer="Alessio <alessio@avsoft.it>" \
 ENV PHP_MAX_EXECUTION_TIME 120
 ENV PHP_MAX_INPUT_TIME 120
 ENV PHP_MEMORY_LIMIT 500M
+ENV APP_ENV production
 ENV DIR /var/www
 
 ## Install libraries, envsubst, supervisor and php modules
@@ -56,22 +59,26 @@ RUN apt-get update -yqq && \
         gettext \
         supervisor \
         cron \
-        gdal-bin \
-        ghostscript \
-        libmagickwand-dev \
+        # gdal-bin \ 
+        ## todo: remove gdal
+        ## todo: remove ghostscript and imagemagick as not required
+        # ghostscript \
+        # libmagickwand-dev \
     && docker-php-ext-install -j$(nproc) iconv \
     && docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/include/ \
     && docker-php-ext-install -j$(nproc) gd \
     && docker-php-ext-install bz2 zip exif pdo_mysql bcmath pcntl opcache \
-    && pecl channel-update pecl.php.net \
-    && pecl install imagick \
-    && docker-php-ext-enable imagick \
-    # Ensure PDF support is enabled in Image Magick
-    && sed -i -e '/rights="none" pattern="{PS,PDF,XPS}"/ s#<!--##g;s#-->##g;' /etc/ImageMagick-6/policy.xml \
-    && sed -i -e 's/rights="none" pattern="{PS,PDF,XPS}"/rights="read|write" pattern="PDF"/' /etc/ImageMagick-6/policy.xml \
+    ## todo: remove ghostscript and imagemagick as not required
+    # && pecl channel-update pecl.php.net \
+    # && pecl install imagick \
+    # && docker-php-ext-enable imagick \
+    # # Ensure PDF support is enabled in Image Magick
+    # && sed -i -e '/rights="none" pattern="{PS,PDF,XPS}"/ s#<!--##g;s#-->##g;' /etc/ImageMagick-6/policy.xml \
+    # && sed -i -e 's/rights="none" pattern="{PS,PDF,XPS}"/rights="read|write" pattern="PDF"/' /etc/ImageMagick-6/policy.xml \
     && docker-php-source delete \
+    && apt-get -y autoremove \
     && apt-get clean \
-    && rm -r /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 ## Forces the locale to UTF-8, suggestion from Marco Zanoni
 RUN locale-gen "en_US.UTF-8" \
@@ -138,18 +145,22 @@ COPY \
 COPY \
     --from=builder \
     --chown=www-data:www-data \
-    /var/www/html/vendor/ \
+    /var/www/vendor/ \
     /var/www/vendor/
 
 COPY \
     --from=builder \
     --chown=www-data:www-data \
-    /var/www/html/public/ \
+    /var/www/public/ \
     /var/www/public/
 
-ENV APP_STORAGE_FOLDER "/var/www/storage"
+COPY \
+    --from=builder \
+    --chown=www-data:www-data \
+    /var/www/bootstrap/cache \
+    /var/www/bootstrap/cache
 
-USER www-data
+ENV APP_STORAGE_FOLDER "/var/www/storage"
 
 WORKDIR /var/www
 

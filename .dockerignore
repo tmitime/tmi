@@ -27,3 +27,8 @@ changelogs/*
 readme.md
 contributing.md
 changelog.md
+.editorconfig
+.env.example
+*.md
+docker-compose.yml
+bootstrap/cache/*.php
