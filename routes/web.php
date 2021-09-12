@@ -3,6 +3,7 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\TaskExportController;
 use App\Http\Controllers\TaskImportController;
 use App\Http\Controllers\UserAvatarController;
 use Illuminate\Support\Facades\Route;
@@ -31,5 +32,7 @@ Route::middleware(['auth:sanctum', 'verified'])->resource('projects', ProjectCon
 Route::middleware(['auth:sanctum', 'verified'])->get('tasks/import', [TaskImportController::class, 'create'])->name('tasks.import.create');
 
 Route::middleware(['auth:sanctum', 'verified'])->post('tasks/import', [TaskImportController::class, 'store'])->name('tasks.import.store');
+
+Route::middleware(['auth:sanctum', 'verified'])->get('tasks/export', [TaskExportController::class, 'show'])->name('tasks.export.show');
 
 Route::middleware(['auth:sanctum', 'verified'])->resource('tasks', TaskController::class);

@@ -100,4 +100,17 @@ class Task extends Model
     {
         return $this->type === 'tmi:Meeting';
     }
+
+    public function toCsv()
+    {
+        $atoms = [
+            $this->created_at->toDateTimeString(),
+            'm',
+            $this->duration,
+            $this->description,
+            $this->type,
+        ];
+
+        return join(';', $atoms);
+    }
 }
