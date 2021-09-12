@@ -30,7 +30,7 @@ ADMIN_PASSWORD=${ADMIN_PASSWORD:-}
 SETUP_USER=www-data
 
 function startup_config () {
-    echo "Starting..."
+
     # echo "- Writing php configuration..."
 
     # if [ -z "$PHP_POST_MAX_SIZE" ]; then
@@ -54,13 +54,13 @@ function startup_config () {
     #     max_execution_time=${PHP_MAX_EXECUTION_TIME}
 	# EOM
 
-    write_config &&
     init_empty_dir $DIR/storage && 
     echo "Changing folder groups and permissions" &&
     chgrp -R $SETUP_USER $DIR/storage &&
     chgrp -R $SETUP_USER $DIR/bootstrap/cache &&
     chmod -R g+rw $DIR/bootstrap/cache &&
     chmod -R g+rw $DIR/storage &&
+    write_config &&
     wait_mariadb &&
     update &&
     chgrp -R $SETUP_USER $DIR/storage/logs &&
@@ -105,7 +105,7 @@ function write_config() {
 		DB_TABLE_PREFIX=${DB_TABLE_PREFIX}
 	EOM
 
-    php artisan config:clear
+    su -s /bin/sh -c "php artisan config:clear" $SETUP_USER
 
 	echo "- ENV file written! $DIR/.env"
 }
@@ -113,7 +113,7 @@ function write_config() {
 function update() {
     cd ${DIR} || return 242
     echo "- Launching update procedure..."
-    php artisan migrate --force
+    su -s /bin/sh -c "php artisan migrate --force" $SETUP_USER
     # create_admin
 }
 
