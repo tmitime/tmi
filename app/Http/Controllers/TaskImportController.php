@@ -25,6 +25,11 @@ class TaskImportController extends Controller
 
         $this->authorize([Task::class, $project]);
 
+        // since we can arrive to the create page from
+        // different locations, we store the
+        // arrival path to redirect back
+        redirect()->setIntendedUrl(url()->previous());
+
         return view('tasks.import', [
             'project' => $project,
         ]);
@@ -128,7 +133,7 @@ class TaskImportController extends Controller
         $project->tasks()->createMany($toCreate->toArray());
 
         return redirect()
-            ->route('tasks.index', ['project' => $project])
+            ->intended(route('tasks.index', ['project' => $project]))
             ->with('flash.banner', __('Tasks imported'));
 
     }
