@@ -1,4 +1,5 @@
 const defaultTheme = require('tailwindcss/defaultTheme');
+const colors = require('tailwindcss/colors')
 
 module.exports = {
     mode: 'jit',
@@ -22,6 +23,9 @@ module.exports = {
                 '8': '8',
                 '9': '9',
             },
+            colors: {
+                rose: colors.rose,
+            }
         },
     },
 
