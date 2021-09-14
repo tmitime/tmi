@@ -11,7 +11,7 @@ class Project extends Model
     use HasFactory, GeneratesUuid;
 
     protected $fillable = [
-        'name', 'start_at', 'end_at', 'working_days',
+        'name', 'description', 'start_at', 'end_at', 'working_days',
     ];
 
     protected $casts = [
@@ -89,4 +89,5 @@ class Project extends Model
          (is_null($this->end_at) 
          || (!is_null($this->end_at) && $this->end_at->greaterThan($today)));
     }
+
 }

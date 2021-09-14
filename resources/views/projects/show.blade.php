@@ -45,13 +45,17 @@
                     <h3 class="font-bold mb-3">{{ __('About') }}</h3>
 
                     <div class="space-y-2">
-                        <p class="">{{ $project->name }}</p>
                         <p><x-time :time="$project->start_at" /> &mdash; <x-time :time="$project->end_at" default="{{ __('ongoing') }}" /></p>
                         
                         @if ($project->working_days)
                             <p>{{ $project->working_days }} {{ __('working days') }}</p>
                         @endif
                     </div>
+
+                    @if ($project->description)
+                        <x-markdown class="mt-2" :value="$project->description" />
+                    @endif
+
                 </div>
                 <div class="pb-6 md:border-b border-gray-300">
                     <h3 class="font-bold mb-3">{{ __('Status') }}</h3>

@@ -47,6 +47,7 @@ class ProjectController extends Controller
 
         $validated = $this->validate($request, [
             'name' => 'required|string|max:250',
+            'description' => 'nullable|string|max:3000',
             'start_at' => 'required|date',
             'end_at' => 'nullable|date|after:start_at',
             'working_days' => 'nullable|integer|min:1',
@@ -119,6 +120,7 @@ class ProjectController extends Controller
 
         $validated = $this->validate($request, [
             'name' => 'required|string|max:250',
+            'description' => 'nullable|string|max:3000',
             'start_at' => 'required|date',
             'end_at' => 'nullable|date|after:start_at',
             'working_days' => 'nullable|integer|min:1',

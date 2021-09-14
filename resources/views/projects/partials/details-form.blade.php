@@ -5,6 +5,12 @@
 </div>
 
 <div class="mt-4">
+    <x-jet-label for="description" value="{{ __('Description') }}" />
+    <x-textarea id="description" class="block mt-1 w-full h-40" type="text" name="description">{{ old('description', optional($project ?? null)->description) }}</x-textarea>
+    <x-jet-input-error for="description" class="mt-2" />
+</div>
+
+<div class="mt-4">
     <x-jet-label for="start_at" value="{{ __('Start date') }}" />
     <x-jet-input id="start_at" class="block mt-1 w-full" type="date" name="start_at" :value="old('start_at', optional(optional($project ?? null)->start_at)->toDateString())" required />
     <x-jet-input-error for="start_at" class="mt-2" />
