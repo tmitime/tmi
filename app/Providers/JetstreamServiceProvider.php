@@ -62,17 +62,17 @@ class JetstreamServiceProvider extends ServiceProvider
             'task:delete',
         ]);
 
-        // Jetstream::role('admin', 'Administrator', [
-        //     'create',
-        //     'read',
-        //     'update',
-        //     'delete',
-        // ])->description('Administrator users can perform any action.');
-        
-        Jetstream::role('collaborator', 'Collaborator', [
+        Jetstream::role('admin', 'Administrator', [
             'project:read',
             'project:create',
             'project:update',
+            'task:read',
+            'task:create',
+            'task:update',
+        ])->description('Administrator users can perform any action.');
+        
+        Jetstream::role('collaborator', 'Collaborator', [
+            'project:read',
             'task:read',
             'task:create',
             'task:update',
