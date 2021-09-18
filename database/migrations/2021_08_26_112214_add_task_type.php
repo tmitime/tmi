@@ -15,7 +15,7 @@ class AddTaskType extends Migration
     {
         Schema::table('tasks', function (Blueprint $table) {
             
-            $table->string('type', 200)->index()->after('duration');
+            $table->string('type', 200)->nullable()->index()->after('duration');
 
         });
     }
