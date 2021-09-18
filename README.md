@@ -19,15 +19,19 @@ Time tracking should be simple and integrated in your workflow.
 - Tasks define the activity and how many minutes or hours you worked on it 
 - Check a project status using the summary views 
 - One tag (`tmi:Task` or `tmi:Meeting`) for each task to not be overwhelmed on the categorization of each task
+- Teams to group projects together, especially useful if you have more that one project with a client
 
 **Considered features**
 
-- Connection to Gitlab to synchronize projects and tasks
-- Define a work hours schedule on a project basis, useful in case by contract you have defined slots
-- Timers shared across devices, start your timer on one device and continue on the other
-- Scrum ready, include in the tags hierarchy scrum specific naming
-- Auto-tagging based on task description, you should not waste time applying tags to tasks
-- Teams to group projects together, especially useful if you have more that one project with a client
+- Define a work hours schedule on a project basis, useful in case by contract you have defined slots ([discussion#6](https://github.com/tmitime/tmi/discussions/6))
+- Scrum ready, include in the tags hierarchy scrum specific naming ([discussion#7](https://github.com/tmitime/tmi/discussions/7))
+- Auto-tagging based on task description, you should not waste time applying tags to tasks ([discussion#8](https://github.com/tmitime/tmi/discussions/8))
+- Timers shared across devices, start your timer on one device and continue on the other ([discussion#10](https://github.com/tmitime/tmi/discussions/10))
+- Connection to Gitlab to synchronize projects and tasks ([discussion#11](https://github.com/tmitime/tmi/discussions/11))
+
+And [many more](https://github.com/tmitime/tmi/discussions?discussions_q=label%3A%22Under+Consideration+%28idea%29%22).
+
+> Considered features are based on [suggested Ideas](https://github.com/tmitime/tmi/discussions/categories/ideas)
 
 ## Installation
 
