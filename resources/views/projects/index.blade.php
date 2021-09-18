@@ -17,23 +17,27 @@
 
             <div class="space-y-2">
 
-                <div class="grid grid-cols-5">
+                <div class="grid grid-cols-7">
                     <div class="col-span-3 text-sm uppercase text-gray-600">name</div>
-                    <div class="text-sm uppercase text-gray-600">period</div>
+                    <div class="col-span-2 text-sm uppercase text-gray-600">period</div>
+                    <div class="text-sm uppercase text-gray-600">team</div>
                     <div class="text-sm uppercase text-gray-600">members</div>
                 </div>
             
                 @forelse ($projects as $project)
 
-                    <a href="{{ route('projects.show', $project) }}" class="grid grid-cols-5 items-center py-2 border-b border-gray-200 hover:bg-white focus:outline-none focus:bg-white focus:ring focus:ring-indigo-500">
+                    <a href="{{ route('projects.show', $project) }}" class="grid grid-cols-7 items-center py-2 border-b border-gray-200 hover:bg-white focus:outline-none focus:bg-white focus:ring focus:ring-indigo-500">
                         <div class="col-span-3">
                             <span class="text-indigo-600 text-lg" >{{ $project->name }}</span>
                             @if ($project->is_ongoing)
                                 <x-badge class="ml-2 bg-yellow-100 text-yellow-700">{{ __('ongoing') }}</x-badge>
                             @endif
                         </div>
-                        <div>
+                        <div class="col-span-2">
                             <x-time :time="$project->start_at" /> &mdash; <x-time :time="$project->end_at" default="{{ __('present') }}" />
+                        </div>
+                        <div>
+                            <div class="truncate">{{ $project->team->name }}</div>
                         </div>
                         <div>
                             @foreach ($project->members as $member)

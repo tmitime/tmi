@@ -2,7 +2,13 @@
 
 namespace App\Providers;
 
+use App\Actions\Jetstream\AddTeamMember;
+use App\Actions\Jetstream\CreateTeam;
+use App\Actions\Jetstream\DeleteTeam;
 use App\Actions\Jetstream\DeleteUser;
+use App\Actions\Jetstream\InviteTeamMember;
+use App\Actions\Jetstream\RemoveTeamMember;
+use App\Actions\Jetstream\UpdateTeamName;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Jetstream\Jetstream;
 
@@ -27,6 +33,12 @@ class JetstreamServiceProvider extends ServiceProvider
     {
         $this->configurePermissions();
 
+        Jetstream::createTeamsUsing(CreateTeam::class);
+        Jetstream::updateTeamNamesUsing(UpdateTeamName::class);
+        Jetstream::addTeamMembersUsing(AddTeamMember::class);
+        Jetstream::inviteTeamMembersUsing(InviteTeamMember::class);
+        Jetstream::removeTeamMembersUsing(RemoveTeamMember::class);
+        Jetstream::deleteTeamsUsing(DeleteTeam::class);
         Jetstream::deleteUsersUsing(DeleteUser::class);
     }
 
@@ -40,10 +52,30 @@ class JetstreamServiceProvider extends ServiceProvider
         Jetstream::defaultApiTokenPermissions(['read']);
 
         Jetstream::permissions([
-            'create',
-            'read',
-            'update',
-            'delete',
+            'project:create',
+            'project:read',
+            'project:update',
+            'project:delete',
+            'task:create',
+            'task:read',
+            'task:update',
+            'task:delete',
         ]);
+
+        // Jetstream::role('admin', 'Administrator', [
+        //     'create',
+        //     'read',
+        //     'update',
+        //     'delete',
+        // ])->description('Administrator users can perform any action.');
+        
+        Jetstream::role('collaborator', 'Collaborator', [
+            'project:read',
+            'project:create',
+            'project:update',
+            'task:read',
+            'task:create',
+            'task:update',
+        ])->description('Collaborator users can track time in existing projects.');
     }
 }
