@@ -54,8 +54,10 @@ class ProjectController extends Controller
         ]);
 
         $prj = DB::transaction(function() use ($validated, $request){
+
+            $team = $request->user()->currentTeam->getKey();
             
-            $project = Project::create($validated);
+            $project = Project::create(array_merge($validated, ['team_id' => $team]));
 
             $project->members()->attach([
                 $request->user()->getKey() => [

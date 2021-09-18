@@ -11,13 +11,20 @@ class Project extends Model
     use HasFactory, GeneratesUuid;
 
     protected $fillable = [
-        'name', 'description', 'start_at', 'end_at', 'working_days',
+        'name', 'description', 'start_at', 'end_at', 'working_days', 'team_id',
     ];
 
     protected $casts = [
         'start_at' => 'datetime',
         'end_at' => 'datetime',
     ];
+
+    /**
+     * The relationships that should always be loaded.
+     *
+     * @var array
+     */
+    protected $with = ['team'];
 
     /**
      * Get the route key for the model.
@@ -69,12 +76,17 @@ class Project extends Model
 
     public function owner()
     {
-        return $this->hasOne(Member::class)->ofMany()->wherePivot('role', Member::ROLE_OWNER);
+        return $this->hasOne(Member::class)->ofMany()->where('members.role', Member::ROLE_OWNER);
     }
 
     public function tasks()
     {
         return $this->hasMany(Task::class);
+    }
+    
+    public function team()
+    {
+        return $this->belongsTo(Team::class);
     }
     
     public function latestTasks()

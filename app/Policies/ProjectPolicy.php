@@ -31,7 +31,8 @@ class ProjectPolicy
      */
     public function view(User $user, Project $project)
     {
-        return $project->hasMember($user);
+        return $project->hasMember($user) ||
+               $user->hasTeamPermission($project->team, 'project:read');
     }
 
     /**
@@ -42,7 +43,8 @@ class ProjectPolicy
      */
     public function create(User $user)
     {
-        return $user->role == User::ROLE_MANAGER;
+        return $user->role == User::ROLE_MANAGER ||
+               $user->hasTeamPermission($user->currentTeam, 'project:create');
     }
 
     /**
@@ -54,7 +56,8 @@ class ProjectPolicy
      */
     public function update(User $user, Project $project)
     {
-        return $project->hasMember($user, Member::ROLE_OWNER);
+        return $project->hasMember($user, Member::ROLE_OWNER) ||
+               $user->hasTeamPermission($project->team, 'project:update');
     }
 
     /**
@@ -66,7 +69,8 @@ class ProjectPolicy
      */
     public function delete(User $user, Project $project)
     {
-        return $project->hasMember($user, Member::ROLE_OWNER);
+        return $project->hasMember($user, Member::ROLE_OWNER) ||
+               $user->hasTeamPermission($project->team, 'project:delete');
     }
 
     /**
@@ -78,7 +82,8 @@ class ProjectPolicy
      */
     public function restore(User $user, Project $project)
     {
-        return $project->hasMember($user, Member::ROLE_OWNER);
+        return $project->hasMember($user, Member::ROLE_OWNER) ||
+               $user->hasTeamPermission($project->team, 'project:delete');
     }
 
     /**
@@ -90,6 +95,7 @@ class ProjectPolicy
      */
     public function forceDelete(User $user, Project $project)
     {
-        return $project->hasMember($user, Member::ROLE_OWNER);
+        return $project->hasMember($user, Member::ROLE_OWNER) ||
+               $user->hasTeamPermission($project->team, 'project:delete');
     }
 }

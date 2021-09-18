@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ $project->name }}
+            <span class="text-gray-500">{{ $project->team->name }} /</span> {{ $project->name }}
         </h2>
 
         @can('update', $project)
