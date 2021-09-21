@@ -77,20 +77,20 @@ function startup_config () {
 
 function write_config() {
 
-    if [ -z "$APP_URL" ]; then
+    if [ -z "$APP_URL" ] && [ -z "$PLAY_WITH_DOCKER" ]; then
         # application URL not set
         echo "**************"
         echo "Public URL not set. Set the public URL using APP_URL."
         echo "**************"
-        return 240
+        exit 240
     fi
-    
-    if [ -z "$APP_KEY" ]; then
+
+    if [ -z "$APP_KEY" ] && [ -z "$PLAY_WITH_DOCKER" ]; then
         # application Key not set
         echo "**************"
         echo "App KEY not set. Set the application key using APP_KEY."
         echo "**************"
-        return 240
+        exit 240
     fi
 
     echo "- Writing env file..."
