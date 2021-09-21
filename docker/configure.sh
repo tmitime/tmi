@@ -22,6 +22,9 @@ DB_USERNAME=${DB_USERNAME:-tmi}
 DB_PASSWORD=${DB_PASSWORD:-}
 DB_TABLE_PREFIX=${DB_TABLE_PREFIX:-tmi_}
 
+## Mailer
+MAIL_MAILER=${MAIL_MAILER:-log}
+
 ## Administration account
 ADMIN_USERNAME=${ADMIN_USERNAME:-}
 ADMIN_PASSWORD=${ADMIN_PASSWORD:-}
@@ -103,6 +106,7 @@ function write_config() {
 		DB_USERNAME=${DB_USERNAME}
 		DB_PASSWORD=${DB_PASSWORD}
 		DB_TABLE_PREFIX=${DB_TABLE_PREFIX}
+		MAIL_MAILER=${MAIL_MAILER}
 	EOM
 
     su -s /bin/sh -c "php artisan config:clear" $SETUP_USER
