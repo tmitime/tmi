@@ -35,8 +35,24 @@ And [many more](https://github.com/tmitime/tmi/discussions?discussions_q=label%3
 
 ## Installation
 
-_to be documented_
+> Requires [Docker](https://www.docker.com/), [Docker Compose](https://docs.docker.com/compose/) and a [MariaDB 10.6](https://mariadb.org/) database.
 
+Automated builds of the image are available on
+[Docker Hub `tmitime/tmi`](https://hub.docker.com/r/tmitime/tmi)
+and is the recommended method of installation.
+
+```bash
+docker pull tmitime/tmi:latest
+```
+
+> Tags are available for each [release](https://github.com/tmitime/tmi/releases), it is highly recommended to use a specific tag.
+
+The best way is via a [`docker-compose.yml`](./deploy/pwd.yml) file 
+that allows to spin an instance with a fresh database in a breeze.
+
+<a href="https://labs.play-with-docker.com/?stack=https://raw.githubusercontent.com/tmitime/tmi/main/deploy/pwd.yml">
+  <img src="https://raw.githubusercontent.com/play-with-docker/stacks/master/assets/images/button.png" alt="Try in Play With Docker"/>
+</a>
 
 ## Usage
 
