@@ -16,7 +16,7 @@ APP_DEBUG=${APP_DEBUG:-false}
 UPLOAD_LIMIT=${UPLOAD_LIMIT:-204800}
 
 ## Database connection
-DB_NAME=${DB_NAME:-tmi}
+DB_DATABASE=${DB_DATABASE:-tmi}
 DB_HOST=${DB_HOST:-127.0.0.1}
 DB_USERNAME=${DB_USERNAME:-tmi}
 DB_PASSWORD=${DB_PASSWORD:-}
@@ -98,7 +98,7 @@ function write_config() {
 		APP_ENV=${APP_ENV}
 		APP_DEBUG=${APP_DEBUG}
 		UPLOAD_LIMIT=${UPLOAD_LIMIT}
-		DB_NAME=${DB_NAME}
+		DB_DATABASE=${DB_DATABASE}
 		DB_HOST=${DB_HOST}
 		DB_USERNAME=${DB_USERNAME}
 		DB_PASSWORD=${DB_PASSWORD}
@@ -122,7 +122,7 @@ function wait_mariadb () {
 }
 
 function mariadb_test () {
-   php -f /usr/local/bin/db-connect-test.php -- -d "${DB_NAME}" -H "${DB_HOST}" -u "${DB_USERNAME}" -p "${DB_PASSWORD}"
+   php -f /usr/local/bin/db-connect-test.php -- -d "${DB_DATABASE}" -H "${DB_HOST}" -u "${DB_USERNAME}" -p "${DB_PASSWORD}"
 }
 
 function wait_command () {
