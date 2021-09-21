@@ -93,7 +93,7 @@ function write_config() {
     echo "- Writing env file..."
 
 	cat > ${DIR}/.env <<-EOM &&
-		APP_KEY=${APP_KEY}
+		APP_KEY=${APP_KEY:-}
 		APP_URL=${APP_URL}
 		APP_ENV=${APP_ENV}
 		APP_DEBUG=${APP_DEBUG}
@@ -106,6 +106,15 @@ function write_config() {
 	EOM
 
     su -s /bin/sh -c "php artisan config:clear" $SETUP_USER
+
+    if [ -z "$APP_KEY" ] && [ -n "$PLAY_WITH_DOCKER" ]; then
+        # generate a temporary key if we run under play with docker
+        echo "**************"
+        echo "Generating temporary APP_KEY."
+        echo "**************"
+        
+        php artisan key:generate
+    fi
 
 	echo "- ENV file written! $DIR/.env"
 }
