@@ -1,0 +1,48 @@
+## Deploy a test instance on Play With Docker 
+## https://labs.play-with-docker.com/
+
+## ---------------------------------------------------
+## Disclaimer
+## ---------------------------------------------------
+## This deployment is not suitable for production
+## as do not persists data and uses insecure
+## credentials.
+## ---------------------------------------------------
+
+## DEMO PURPOSES. DO NOT USE IN PRODUCTION.
+
+version: '3'
+services:
+    app:
+        image: "tmitime/tmi:main"
+        ports:
+            - '80:80'
+        environment:
+            PLAY_WITH_DOCKER: "yes"
+            DB_HOST: mariadb
+            DB_DATABASE: '${DB_DATABASE:-tmi}'
+            DB_USER: '${DB_USERNAME:-tmi}'
+            DB_PASSWORD: '${DB_PASSWORD:-password}'
+            # APP_URL: http://localhost:8080
+            QUEUE_CONNECTION: sync
+        networks:
+            - sail
+        depends_on:
+            - mariadb
+    mariadb:
+        image: 'mariadb:10.6'
+        environment:
+            MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: "yes"
+            MARIADB_ROOT_PASSWORD: ""
+            MARIADB_DATABASE: '${DB_DATABASE:-tmi}'
+            MARIADB_USER: '${DB_USERNAME:-tmi}'
+            MARIADB_PASSWORD: '${DB_PASSWORD:-password}'
+        volumes:
+            - 'sailmariadb:/var/lib/mysql'
+        networks:
+            - sail
+networks:
+    sail:
+volumes:
+    sailmariadb:
+        driver: local

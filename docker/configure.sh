@@ -16,11 +16,14 @@ APP_DEBUG=${APP_DEBUG:-false}
 UPLOAD_LIMIT=${UPLOAD_LIMIT:-204800}
 
 ## Database connection
-DB_NAME=${DB_NAME:-tmi}
+DB_DATABASE=${DB_DATABASE:-tmi}
 DB_HOST=${DB_HOST:-127.0.0.1}
 DB_USERNAME=${DB_USERNAME:-tmi}
 DB_PASSWORD=${DB_PASSWORD:-}
 DB_TABLE_PREFIX=${DB_TABLE_PREFIX:-tmi_}
+
+## Mailer
+MAIL_MAILER=${MAIL_MAILER:-log}
 
 ## Administration account
 ADMIN_USERNAME=${ADMIN_USERNAME:-}
@@ -74,38 +77,48 @@ function startup_config () {
 
 function write_config() {
 
-    if [ -z "$APP_URL" ]; then
+    if [ -z "$APP_URL" ] && [ -z "$PLAY_WITH_DOCKER" ]; then
         # application URL not set
         echo "**************"
         echo "Public URL not set. Set the public URL using APP_URL."
         echo "**************"
-        return 240
+        exit 240
     fi
-    
-    if [ -z "$APP_KEY" ]; then
+
+    if [ -z "$APP_KEY" ] && [ -z "$PLAY_WITH_DOCKER" ]; then
         # application Key not set
         echo "**************"
         echo "App KEY not set. Set the application key using APP_KEY."
         echo "**************"
-        return 240
+        exit 240
     fi
 
     echo "- Writing env file..."
 
 	cat > ${DIR}/.env <<-EOM &&
-		APP_KEY=${APP_KEY}
+		APP_KEY=${APP_KEY:-}
 		APP_URL=${APP_URL}
 		APP_ENV=${APP_ENV}
 		APP_DEBUG=${APP_DEBUG}
 		UPLOAD_LIMIT=${UPLOAD_LIMIT}
-		DB_NAME=${DB_NAME}
+		DB_DATABASE=${DB_DATABASE}
 		DB_HOST=${DB_HOST}
 		DB_USERNAME=${DB_USERNAME}
 		DB_PASSWORD=${DB_PASSWORD}
 		DB_TABLE_PREFIX=${DB_TABLE_PREFIX}
+		MAIL_MAILER=${MAIL_MAILER}
 	EOM
 
     su -s /bin/sh -c "php artisan config:clear" $SETUP_USER
+
+    if [ -z "$APP_KEY" ] && [ -n "$PLAY_WITH_DOCKER" ]; then
+        # generate a temporary key if we run under play with docker
+        echo "**************"
+        echo "Generating temporary APP_KEY."
+        echo "**************"
+        
+        php artisan key:generate
+    fi
 
 	echo "- ENV file written! $DIR/.env"
 }
@@ -122,7 +135,7 @@ function wait_mariadb () {
 }
 
 function mariadb_test () {
-   php -f /usr/local/bin/db-connect-test.php -- -d "${DB_NAME}" -H "${DB_HOST}" -u "${DB_USERNAME}" -p "${DB_PASSWORD}"
+   php -f /usr/local/bin/db-connect-test.php -- -d "${DB_DATABASE}" -H "${DB_HOST}" -u "${DB_USERNAME}" -p "${DB_PASSWORD}"
 }
 
 function wait_command () {
