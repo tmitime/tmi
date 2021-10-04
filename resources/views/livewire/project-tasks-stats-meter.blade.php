@@ -1,6 +1,9 @@
 <div>
 
-    <div class="mb-2"><span class="font-bold">{{ $working_days }}</span> working days accounted</div>
+    <div class="mb-2"><span class="font-bold">{{ $working_days }}</span> {{ __('working days accounted') }}</div>
+    @if ($remaining_working_days)
+        <div class="mb-2"><span class="font-bold">{{ $remaining_working_days }}</span> {{ __('working days remaining') }}</div>
+    @endif
 
     {{-- Trick to prevent pruning of class from Tailwind --}}
     {{-- bg-yellow-500 --}}
