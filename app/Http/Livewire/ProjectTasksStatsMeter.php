@@ -14,6 +14,8 @@ class ProjectTasksStatsMeter extends Component
 
     public $working_days = 0;
     
+    public $remaining_working_days = 0;
+    
     public $colors = [
         'meetings' => 'bg-blue-600',
         'tasks' => 'bg-yellow-500',
@@ -35,6 +37,8 @@ class ProjectTasksStatsMeter extends Component
         $sum = $this->project->tasks()->sum('duration');
 
         $this->working_days = $sum > 0 ? round( $sum / Carbon::MINUTES_PER_HOUR / config('timetracking.working_day'), 2) : 0;
+        
+        $this->remaining_working_days = $this->project->working_days ? round( $this->project->working_days - $this->working_days, 2) : null;
 
         $meetings = $this->project->tasks()->meeting()->count();
         
