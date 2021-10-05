@@ -57,22 +57,22 @@ function startup_config () {
     #     max_execution_time=${PHP_MAX_EXECUTION_TIME}
 	# EOM
 
-    init_empty_dir $DIR/storage && 
+    init_empty_dir "$DIR/storage" && 
     echo "Changing folder groups and permissions" &&
-    chgrp -R $SETUP_USER $DIR/storage &&
-    chgrp -R $SETUP_USER $DIR/bootstrap/cache &&
-    chmod -R g+rw $DIR/bootstrap/cache &&
-    chmod -R g+rw $DIR/storage &&
+    chgrp -R "$SETUP_USER" "$DIR/storage" &&
+    chgrp -R "$SETUP_USER" "$DIR/bootstrap/cache" &&
+    chmod -R g+rw "$DIR/bootstrap/cache" &&
+    chmod -R g+rw "$DIR/storage" &&
     write_config &&
     wait_mariadb &&
     update &&
-    chgrp -R $SETUP_USER $DIR/storage/logs &&
-    chgrp -R $SETUP_USER $DIR/bootstrap/cache &&
-    chmod -R g+rw $DIR/bootstrap/cache &&
-    chmod -R g+rw $DIR/storage/logs &&
+    chgrp -R "$SETUP_USER" "$DIR/storage/logs" &&
+    chgrp -R "$SETUP_USER" "$DIR/bootstrap/cache" &&
+    chmod -R g+rw "$DIR/bootstrap/cache" &&
+    chmod -R g+rw "$DIR/storage/logs" &&
+    su -s /bin/sh -c "php artisan storage:link" "$SETUP_USER" &&
 	echo "Configured."
     
-    su -s /bin/sh -c "php artisan storage:link" $SETUP_USER
 }
 
 function write_config() {
@@ -95,7 +95,7 @@ function write_config() {
 
     echo "- Writing env file..."
 
-	cat > ${DIR}/.env <<-EOM &&
+	cat > "${DIR}"/.env <<-EOM &&
 		APP_KEY=${APP_KEY:-}
 		APP_URL=${APP_URL}
 		APP_ENV=${APP_ENV}
@@ -124,7 +124,7 @@ function write_config() {
 }
 
 function update() {
-    cd ${DIR} || return 242
+    cd "${DIR}" || return 242
     echo "- Launching update procedure..."
     su -s /bin/sh -c "php artisan migrate --force" $SETUP_USER
     # create_admin
@@ -145,13 +145,15 @@ function wait_command () {
 
     for i in $(seq "$retry_times"); do
         echo "- Waiting for ${command} ... Retry $i"
-        if [[ "$command" -eq 0 ]]; then
+        
+        if [[ $(command) -eq 0 ]]; then
+            echo "- Database connection confirmed"
             return 0
         else
             sleep "$sleep_seconds"
         fi
     done
-    return 1
+    exit 1
 }
 
 

@@ -37,3 +37,7 @@ catch(Exception $ex)
 {
     err_exit($ex->getMessage());
 }
+catch(PDOException $ex)
+{
+    err_exit($ex->getMessage());
+}
