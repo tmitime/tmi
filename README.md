@@ -54,6 +54,8 @@ that allows to spin an instance with a fresh database in a breeze.
   <img src="https://raw.githubusercontent.com/play-with-docker/stacks/master/assets/images/button.png" alt="Try in Play With Docker"/>
 </a>
 
+Once the instance is running you can login with user `tmi@tmi.local` and password `play.with.docker`.
+
 ## Usage
 
 _to be documented_

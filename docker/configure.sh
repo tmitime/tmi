@@ -125,9 +125,9 @@ function write_config() {
 
 function update() {
     cd "${DIR}" || return 242
-    echo "- Launching update procedure..."
-    su -s /bin/sh -c "php artisan migrate --force" $SETUP_USER
-    # create_admin
+    echo "- Launching update procedure..." || return 242
+    su -s /bin/sh -c "php artisan migrate --force" $SETUP_USER || return 242
+    create_admin || return 242
 }
 
 function wait_mariadb () {
@@ -162,7 +162,7 @@ function create_admin () {
     if [ -z "$ADMIN_USERNAME" ] &&  [ -z "$ADMIN_PASSWORD" ]; then
         # if both username and password are not defined or empty, tell to create the user afterwards an end return
         echo "**************"
-        echo "Remember to create an admin user: php artisan create-admin --help"
+        echo "Remember to create an admin user: php artisan tmi:admin --help"
         echo "**************"
         return 0
     fi
@@ -178,12 +178,12 @@ function create_admin () {
     if [ -n "$ADMIN_USERNAME" ] &&  [ -z "$ADMIN_PASSWORD" ]; then
         # username set, but empty password => the user needs to be created after the setup
         echo "**************"
-        echo "Skipping creation of default administrator. Use php artisan create-admin after the startup is complete."
+        echo "Skipping creation of default administrator. Use php artisan tmi:admin after the startup is complete."
         echo "**************"
         return 0
     fi
 
-    su -s /bin/sh -c "php artisan create-admin '$ADMIN_USERNAME' --password '$ADMIN_PASSWORD'" $SETUP_USER
+    su -s /bin/sh -c "php artisan tmi:admin -n --email '$ADMIN_USERNAME' --password '$ADMIN_PASSWORD'" $SETUP_USER
 
     local ret=$?
     if [ $ret -eq 2 ]; then
