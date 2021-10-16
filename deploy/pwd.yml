@@ -25,6 +25,8 @@ services:
             DB_PASSWORD: '${DB_PASSWORD:-password}'
             # APP_URL: http://localhost:8080
             QUEUE_CONNECTION: sync
+            ADMIN_USERNAME: "tmi@tmi.local"
+            ADMIN_PASSWORD: "play.with.docker"
         networks:
             - sail
         depends_on:
