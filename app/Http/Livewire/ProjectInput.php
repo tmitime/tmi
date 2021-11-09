@@ -94,10 +94,15 @@ class ProjectInput extends Component
     public function fetchAutocomplete()
     {
         // TODO: define query scopes for ordering by latest updated/latest added task
+
+        /** @var \App\Models\User */
+        $user = auth()->user();
+
         $this->projects = Project::take(5)
             ->when($this->query, function($query, $term){
                 return $query->where('name', 'like', '%' . $term. '%');
             })
+            ->withMember($user)
             ->get()
             ->toArray();
         $this->showDropdown = true;

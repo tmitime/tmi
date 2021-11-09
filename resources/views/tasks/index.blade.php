@@ -18,7 +18,7 @@
             @endif
         </h2>
 
-        @can('create', \App\Models\Task::class)
+        @can('create', [\App\Models\Task::class, $filters['project'] ?? null])
             @php
                 $prj = optional($filters['project'] ?? null)->uuid
             @endphp

@@ -15,9 +15,13 @@ class DashboardController extends Controller
      */
     public function __invoke(Request $request)
     {
+        $user = $request->user();
+
+        $team = $user->currentTeam()->first();
 
         return view('dashboard', [
-            'projects' => Project::with('members')->get(),
+            'projects' => Project::with('members')->ofTeam($team)->get(),
+            'team' => $team,
         ]);
     }
 }

@@ -14,12 +14,13 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 flex flex-col-reverse md:flex-row space-x-6">
             <div class="flex-grow space-y-6">
-                
-                <div class="bg-gray-50 rounded-md shadow-lg p-4">
-                    <h3 class="font-bold mb-3">{{ __('Track time') }}</h3>
+                @can('create', [\App\Models\Task::class, $project])
+                    <div class="bg-gray-50 rounded-md shadow-lg p-4">
+                        <h3 class="font-bold mb-3">{{ __('Track time') }}</h3>
 
-                    <livewire:track-activity :project="$project" />
-                </div>
+                        <livewire:track-activity :project="$project" />
+                    </div>
+                @endcan
                 
                 <livewire:project-summary :project="$project" />
                 
@@ -65,8 +66,8 @@
                 </div>
                 <div class="pb-6 md:border-b border-gray-300">
                     <h3 class="font-bold mb-3">{{ __('Members') }}</h3>
-                    <div class="flex justify-between items-center">
-                        @foreach ($project->members as $member)
+                    <div class="flex items-center space-x-2">
+                        @foreach ($project->allMembers() as $member)
 
                             <x-user-avatar width="w-10" height="h-10" :user="$member" />
 
@@ -81,12 +82,14 @@
                         <li>
                             <a class="underline" href="{{ route('tasks.index', ['project' => $project]) }}">{{ __('View all tasks') }}</a>
                         </li>
-                        <li>
-                            <a class="underline" href="{{ route('tasks.import.create', ['project' => $project]) }}">{{ __('Import tasks') }}</a>
-                        </li>
-                        <li>
-                            <a class="underline" target="_blank" href="{{ route('tasks.export.show', ['project' => $project]) }}">{{ __('Export tasks') }}</a>
-                        </li>
+                        @can('create', [\App\Models\Task::class, $project])
+                            <li>
+                                <a class="underline" href="{{ route('tasks.import.create', ['project' => $project]) }}">{{ __('Import tasks') }}</a>
+                            </li>
+                            <li>
+                                <a class="underline" target="_blank" href="{{ route('tasks.export.show', ['project' => $project]) }}">{{ __('Export tasks') }}</a>
+                            </li>
+                        @endcan
                     </ul>
 
                     <x-jet-label>{{ __('Reference') }}</x-jet-label>

@@ -14,12 +14,17 @@ class ProjectController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $this->authorize(Project::class);
+
+        $user = $request->user();
+
+        $team = $user->currentTeam()->first();
         
         return view('projects.index', [
-            'projects' => Project::with('members')->get(),
+            'projects' => Project::with('members')->ofTeam($team)->get(),
+            'team' => $team,
         ]);
     }
 
