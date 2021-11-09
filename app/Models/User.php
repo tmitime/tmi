@@ -66,8 +66,13 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
+    /**
+     * Get the default profile photo URL if no profile photo has been uploaded.
+     *
+     * @return string
+     */
     protected function defaultProfilePhotoUrl()
     {
-        return route('avatar');
+        return route('avatar.show', ['avatar' => bin2hex($this->getKey())]);
     }
 }

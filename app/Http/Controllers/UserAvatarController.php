@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\HeaderUtils;
@@ -16,11 +17,13 @@ class UserAvatarController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function __invoke(Request $request)
+    public function __invoke(Request $request, $avatar = null)
     {
-        $user = $request->user();
+        $user_id = @hex2bin($avatar) ?: null;
 
-        $initials = Str::of($user->name)->limit(2, '')->title();
+        $user = $user_id ? User::find($user_id) : null;
+
+        $initials = Str::of(optional($user)->name ?? ':(')->limit(2, '')->title();
 
         $background = '#65A30D';
         $foreground = '#fff';

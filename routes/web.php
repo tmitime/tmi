@@ -21,11 +21,19 @@ use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', 'login');
 
+// Dashboard -------
+
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', DashboardController::class)->name('dashboard');
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/user-avatar.svg', UserAvatarController::class)->name('avatar');
+// Avatar ----------
+
+Route::middleware(['auth:sanctum', 'verified'])->get('/avatar-{avatar}.svg', UserAvatarController::class)->name('avatar.show');
+
+// Projects --------
 
 Route::middleware(['auth:sanctum', 'verified'])->resource('projects', ProjectController::class);
+
+// Tasks -----------
 
 Route::middleware(['auth:sanctum', 'verified'])->get('tasks/import', [TaskImportController::class, 'create'])->name('tasks.import.create');
 
