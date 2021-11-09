@@ -42,7 +42,9 @@ class Project extends Model
         return $instance->where($instance->getRouteKeyName(), $value)->first();
     }
 
-
+    /**
+     * Direct members of this project explicitly added
+     */
     public function members()
     {
         return $this->belongsToMany(User::class, 'members')
@@ -50,6 +52,22 @@ class Project extends Model
             ->as('membership')
             ->withTimestamps()
             ->withPivot('role');
+    }
+
+    /**
+     * Members of the team that has access because of team membership
+     */
+    public function teamMembers()
+    {
+        return $this->team()->first()->users();
+    }
+
+    /**
+     * All members that has access to this project, via direct membership or team membership
+     */
+    public function allMembers()
+    {
+        return $this->members->merge($this->teamMembers);
     }
 
     /**
@@ -74,6 +92,26 @@ class Project extends Model
             ->exists();
     }
 
+    /**
+     * Filter projects that has a specific user as member
+     * @param mixed $query
+     * @param \App\Models\User $user
+     * @param array|int $role
+     */
+    public function scopeWithMember($query, User $user, $role = null)
+    {
+        return $query->whereHas('members', function ($builder) use($user, $role){
+           $builder 
+            ->where('members.user_id', $user->getKey())
+            ->when($role, function($query, $r) use($role){
+                if(is_array($role)){
+                    return $query->whereIn('members.role', $role);
+                }
+                return $query->where('members.role', $role);
+            });
+        });
+    }
+
     public function owner()
     {
         return $this->hasOne(Member::class)->ofMany()->where('members.role', Member::ROLE_OWNER);
@@ -87,6 +125,11 @@ class Project extends Model
     public function team()
     {
         return $this->belongsTo(Team::class);
+    }
+
+    public function scopeOfTeam($query, Team $team)
+    {
+        return $query->where('team_id', $team->getKey());
     }
     
     public function latestTasks()

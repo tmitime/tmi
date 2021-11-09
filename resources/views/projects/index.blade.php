@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Projects') }}
+            <span class="text-gray-500">{{ $team->name }} /</span> {{ __('Projects') }}
         </h2>
 
         @can('create', \App\Models\Project::class)
@@ -39,8 +39,8 @@
                         <div>
                             <div class="truncate">{{ $project->team->name }}</div>
                         </div>
-                        <div>
-                            @foreach ($project->members as $member)
+                        <div class="flex space-x-1">
+                            @foreach ($project->allMembers() as $member)
                                 <x-user-avatar width="w-6" height="h-6" :user="$member" />
                             @endforeach
                         </div>
