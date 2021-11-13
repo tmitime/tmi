@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Dyrynda\Database\Support\GeneratesUuid;
+use Illuminate\Support\Facades\DB;
+use Laravel\Jetstream\Jetstream;
 
 class Project extends Model
 {
@@ -44,6 +46,8 @@ class Project extends Model
 
     /**
      * Direct members of this project explicitly added
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function members()
     {
@@ -55,15 +59,27 @@ class Project extends Model
     }
 
     /**
-     * Members of the team that has access because of team membership
+     * Inherited members from the team
+     * 
+     * Note: owner of the team is excluded
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function teamMembers()
     {
-        return $this->team()->first()->users();
+        return $this->belongsToMany(
+                Jetstream::userModel(),
+                Jetstream::membershipModel(), 'team_id', null, 'team_id')
+                        ->withPivot('role')
+                        ->withTimestamps()
+                        ->as('membership');
     }
 
     /**
-     * All members that has access to this project, via direct membership or team membership
+     * All members that has access to this project, 
+     * via direct membership or team membership
+     * 
+     * @return \Illuminate\Support\Collection|\App\Models\User[]
      */
     public function allMembers()
     {
@@ -90,6 +106,24 @@ class Project extends Model
                 return $query->where('members.role', $role);
             })
             ->exists();
+    }
+
+    public function hasMemberWithEmail($email)
+    {
+        return $this->allMembers()->contains(function ($user) use ($email) {
+            return $user->email === $email;
+        });
+    }
+
+    /**
+     * Remove the given user from the project.
+     *
+     * @param  \App\Models\User  $user
+     * @return void
+     */
+    public function removeUser($user)
+    {
+        $this->members()->detach($user);
     }
 
     /**
@@ -143,6 +177,22 @@ class Project extends Model
         return $this->start_at->lessThanOrEqualTo($today) &&
          (is_null($this->end_at) 
          || (!is_null($this->end_at) && $this->end_at->greaterThan($today)));
+    }
+
+    /**
+     * Purge all of the project's resources.
+     *
+     * @return void
+     */
+    public function purge()
+    {
+        DB::transaction(function(){
+            $this->tasks()->delete();
+    
+            $this->members()->detach();
+    
+            $this->delete();
+        });
     }
 
 }

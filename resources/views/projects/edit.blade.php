@@ -36,6 +36,15 @@
                 </div>
             </div>
 
+            @livewire('project-member-manager', ['project' => $project])
+
+            @if (Gate::check('delete', $project->team))
+                <x-jet-section-border />
+
+                <div class="mt-10 sm:mt-0">
+                    @livewire('delete-project-form', ['project' => $project])
+                </div>
+            @endif
 
                     
 

@@ -47,7 +47,12 @@ class TaskPolicy
             return true;
         }
 
-        return $project->hasMember($user, [Member::ROLE_DEVELOPER, Member::ROLE_OWNER]);
+        return $project->hasMember($user, [
+            Member::ROLE_MAINTAINER,
+            Member::ROLE_COLLABORATOR,
+            Member::ROLE_OWNER,
+            Member::ROLE_GUEST,
+        ]);
     }
 
     /**
@@ -59,7 +64,8 @@ class TaskPolicy
      */
     public function update(User $user, Task $task)
     {
-        return $task->user_id == $user->getKey();
+        return $task->user_id == $user->getKey() || 
+            $task->project->hasMember($user, Member::ROLE_OWNER);
     }
 
     /**
@@ -71,7 +77,8 @@ class TaskPolicy
      */
     public function delete(User $user, Task $task)
     {
-        return $task->user_id == $user->getKey();
+        return $task->user_id == $user->getKey() || 
+            $task->project->hasMember($user, Member::ROLE_OWNER);
     }
 
     /**
@@ -83,7 +90,8 @@ class TaskPolicy
      */
     public function restore(User $user, Task $task)
     {
-        return $task->user_id == $user->getKey();
+        return $task->user_id == $user->getKey() || 
+            $task->project->hasMember($user, Member::ROLE_OWNER);
     }
 
     /**
@@ -95,6 +103,7 @@ class TaskPolicy
      */
     public function forceDelete(User $user, Task $task)
     {
-        return $task->user_id == $user->getKey();
+        return $task->user_id == $user->getKey() || 
+            $task->project->hasMember($user, Member::ROLE_OWNER);
     }
 }
