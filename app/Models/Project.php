@@ -146,9 +146,20 @@ class Project extends Model
         });
     }
 
+    /**
+     * The owner of this project.
+     * 
+     * The user that was first added with Member::ROLE_OWNER
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function owner()
     {
-        return $this->hasOne(Member::class)->ofMany()->where('members.role', Member::ROLE_OWNER);
+        return $this->hasOne(Member::class)->ofMany([
+            'created_at' => 'min',
+        ], function ($query) {
+            $query->where('members.role', Member::ROLE_OWNER);
+        });
     }
 
     public function tasks()
