@@ -82,6 +82,9 @@
                         <li>
                             <a class="underline" href="{{ route('tasks.index', ['project' => $project]) }}">{{ __('View all tasks') }}</a>
                         </li>
+                        <li>
+                            <a class="underline" target="_blank" href="{{ route('projects.report', ['project' => $project]) }}">{{ __('Monthly report') }}</a>
+                        </li>
                         @can('create', [\App\Models\Task::class, $project])
                             <li>
                                 <a class="underline" href="{{ route('tasks.import.create', ['project' => $project]) }}">{{ __('Import tasks') }}</a>

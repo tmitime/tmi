@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TaskExportController;
 use App\Http\Controllers\TaskImportController;
@@ -30,6 +31,8 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', DashboardCont
 Route::middleware(['auth:sanctum', 'verified'])->get('/avatar-{avatar}.svg', UserAvatarController::class)->name('avatar.show');
 
 // Projects --------
+
+Route::middleware(['auth:sanctum', 'verified'])->get('projects/{project}/report', ReportController::class)->name('projects.report');
 
 Route::middleware(['auth:sanctum', 'verified'])->resource('projects', ProjectController::class);
 
