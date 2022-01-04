@@ -21,6 +21,7 @@ class DashboardController extends Controller
 
         return view('dashboard', [
             'projects' => Project::with('members')->ofTeam($team)->get(),
+            'shared' => Project::with('members')->sharedTo($user, $team)->get(),
             'team' => $team,
         ]);
     }

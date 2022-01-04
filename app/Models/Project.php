@@ -176,6 +176,20 @@ class Project extends Model
     {
         return $query->where('team_id', $team->getKey());
     }
+
+    /**
+     * Filter projects showing only shared with the specified user that are not
+     * part of their teams
+     * 
+     * @param \App\Models\User $user
+     */
+    public function scopeSharedTo($query, User $user)
+    {
+        $teams = $user->allTeams()->pluck('id');
+
+        return $query->withMember($user)
+            ->whereNotIn('team_id', $teams->toArray());
+    }
     
     public function latestTasks()
     {
