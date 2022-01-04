@@ -60,22 +60,51 @@ class JetstreamServiceProvider extends ServiceProvider
             'task:read',
             'task:update',
             'task:delete',
+            'task:import',
+            'task:export',
         ]);
 
-        Jetstream::role('admin', 'Administrator', [
+        // Jetstream::role('owner', 'Owner', [
+        //     'project:create',
+        //     'project:read',
+        //     'project:update',
+        //     'project:delete',
+        //     'task:create',
+        //     'task:read',
+        //     'task:update',
+        //     'task:delete',
+        //     'task:import',
+        //     'task:export',
+        // ])->description('Owner.');
+        
+        Jetstream::role('admin', 'Maintainer', [
             'project:read',
             'project:create',
             'project:update',
             'task:read',
             'task:create',
             'task:update',
-        ])->description('Administrator users can perform any action.');
+            'task:import',
+        ])->description('Help you with management activities.');
         
         Jetstream::role('collaborator', 'Collaborator', [
             'project:read',
             'task:read',
             'task:create',
             'task:update',
-        ])->description('Collaborator users can track time in existing projects.');
+            'task:import',
+        ])->description('A member that can track time and see what\'s going on.');
+        
+        Jetstream::role('guest', 'Guest', [
+            'project:read',
+            'task:read',
+            'task:create',
+            'task:update',
+            'task:import',
+        ])->description('External users that can see what\'s happening and track only their time.');
+        
+        Jetstream::role('observer', 'Observer', [
+            'project:read',
+        ])->description('An external user that can view general reports, e.g. a client that want to see a monthly report.');
     }
 }

@@ -3,14 +3,36 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\Pivot;
+use Laravel\Jetstream\Jetstream;
 
 class Member extends Pivot
 {
+    // todo: rename to ProjectMembership
+    
     public const ROLE_OWNER = 10;
     
-    public const ROLE_DEVELOPER = 20;
+    public const ROLE_MAINTAINER = 15;
+
+    public const ROLE_COLLABORATOR = 20;
     
     public const ROLE_GUEST = 30;
+
+    public const ROLE_OBSERVER = 40;
+
+    protected static $jetstreamRoleMap = [
+        'admin' => self::ROLE_MAINTAINER,
+        'collaborator' => self::ROLE_COLLABORATOR,
+        'guest' => self::ROLE_GUEST,
+        'observer' => self::ROLE_OBSERVER,
+    ];
+    
+    protected static $jetstreamInvertedRoleMap = [
+        self::ROLE_OWNER  =>  'owner',
+        self::ROLE_MAINTAINER  =>  'admin',
+        self::ROLE_COLLABORATOR  =>  'collaborator',
+        self::ROLE_GUEST  =>  'guest',
+        self::ROLE_OBSERVER  =>  'observer',
+    ];
 
     /**
      * Autoincrement primary key configured
@@ -31,19 +53,28 @@ class Member extends Pivot
 
     public function getRoleLabelAttribute($value)
     {
-        switch ($this->role) {
-            case self::ROLE_OWNER:
-                return 'owner';
-                break;
-            
-            case self::ROLE_DEVELOPER:
-                return 'developer';
-                break;
-            
-            default:
-                return 'guest';
-                break;
+        $name = self::$jetstreamInvertedRoleMap[$this->role] ?? null;
+
+        if(!$name){
+            return null;
         }
+
+        return Jetstream::findRole($name)->name ?? $name;
+    }
+    
+    public function getSourceAttribute($value)
+    {
+        return __('Project');
+    }
+
+    public function isTeamMember()
+    {
+        return false;
+    }
+    
+    public function isProjectMember()
+    {
+        return true;
     }
 
     public function user()
@@ -59,6 +90,11 @@ class Member extends Pivot
     public function personalTeam()
     {
         return $this->user->personalTeam();
+    }
+
+    public static function convertJetstreamRole($role)
+    {
+        return self::$jetstreamRoleMap[$role] ?? self::ROLE_GUEST;
     }
     
 }

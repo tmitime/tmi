@@ -60,6 +60,43 @@ class ProjectPolicy
                $user->hasTeamPermission($project->team, 'project:update');
     }
 
+    
+    /**
+     * Determine whether the user can add project members.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Project  $project
+     * @return mixed
+     */
+    public function addProjectMember(User $user, Project $project)
+    {
+        return $project->hasMember($user, Member::ROLE_OWNER);
+    }
+
+    /**
+     * Determine whether the user can update project member permissions.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Project  $project
+     * @return mixed
+     */
+    public function updateProjectMember(User $user, Project $project)
+    {
+        return $project->hasMember($user, Member::ROLE_OWNER);
+    }
+
+    /**
+     * Determine whether the user can remove project members.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Project  $project
+     * @return mixed
+     */
+    public function removeProjectMember(User $user, Project $project)
+    {
+        return $project->hasMember($user, Member::ROLE_OWNER);
+    }
+
     /**
      * Determine whether the user can delete the model.
      *

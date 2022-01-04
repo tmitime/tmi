@@ -109,6 +109,13 @@ class ProjectController extends Controller
     {
         $this->authorize($project);
 
+        $project->load([
+            'owner',
+            'members',
+            'team.owner',
+            'teamMembers',
+        ]);
+
         return view('projects.edit', [
             'project' => $project,
         ]);
