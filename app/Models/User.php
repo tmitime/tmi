@@ -11,6 +11,7 @@ use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Str;
 use Laravel\Jetstream\HasTeams;
+use Oneofftech\Identities\WithIdentities;
 
 class User extends Authenticatable
 {
@@ -20,6 +21,7 @@ class User extends Authenticatable
     use HasTeams;
     use Notifiable;
     use TwoFactorAuthenticatable;
+    use WithIdentities;
 
     public const ROLE_USER = 10;
     
