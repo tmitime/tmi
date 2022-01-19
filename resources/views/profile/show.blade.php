@@ -12,6 +12,12 @@
 
                 <x-jet-section-border />
             @endif
+            
+            @if(config('services.gitlab.client_id') ?? false)
+                <livewire:social-profiles />
+
+                <x-jet-section-border />
+            @endif
 
             @if (Laravel\Fortify\Features::enabled(Laravel\Fortify\Features::updatePasswords()))
                 <div class="mt-10 sm:mt-0">
