@@ -30,4 +30,11 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'gitlab' => [
+        'client_id' => env('GITLAB_CLIENT_ID'),
+        'client_secret' => env('GITLAB_CLIENT_SECRET'),
+        'redirect' => null, // set in the controller no need to specify
+        'instance_uri' => env('GITLAB_INSTANCE_URI', 'https://gitlab.com/')
+    ],
+
 ];

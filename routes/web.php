@@ -8,6 +8,7 @@ use App\Http\Controllers\TaskExportController;
 use App\Http\Controllers\TaskImportController;
 use App\Http\Controllers\UserAvatarController;
 use Illuminate\Support\Facades\Route;
+use Oneofftech\Identities\Facades\Identity;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,6 +22,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::redirect('/', 'login');
+
+// Login and register via third party providers
+
+Identity::routes();
 
 // Dashboard -------
 
