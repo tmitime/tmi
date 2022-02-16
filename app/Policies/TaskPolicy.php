@@ -32,7 +32,14 @@ class TaskPolicy
      */
     public function view(User $user, Task $task)
     {
-        return $task->user_id == $user->getKey();
+        return $task->user_id == $user->getKey()
+            || $user->hasTeamPermission($task->project->team, 'task:read')
+            || $task->project->hasMember($user, [
+                    Member::ROLE_MAINTAINER,
+                    Member::ROLE_COLLABORATOR,
+                    Member::ROLE_OWNER,
+                    Member::ROLE_GUEST,
+                ]);
     }
 
     /**
@@ -47,12 +54,14 @@ class TaskPolicy
             return true;
         }
 
-        return $project->hasMember($user, [
-            Member::ROLE_MAINTAINER,
-            Member::ROLE_COLLABORATOR,
-            Member::ROLE_OWNER,
-            Member::ROLE_GUEST,
-        ]);
+        return 
+            $user->hasTeamPermission($project->team, 'task:create') ||
+            $project->hasMember($user, [
+                Member::ROLE_MAINTAINER,
+                Member::ROLE_COLLABORATOR,
+                Member::ROLE_OWNER,
+                Member::ROLE_GUEST,
+            ]);
     }
 
     /**
