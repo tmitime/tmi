@@ -73,7 +73,7 @@ the UI styling.
 
 Given the selected stack TMI requires:
 
-- [PHP 7.4](https://www.php.net/) or above
+- [PHP 8.1](https://www.php.net/) or above
 - [Composer 2](https://getcomposer.org/)
 - [NodeJS](https://nodejs.org/en/) version 12 or above with [Yarn](https://classic.yarnpkg.com/en/docs/install) package manager (v1.x)
 - [MariaDB](https://mariadb.org/) version 10.6 or above

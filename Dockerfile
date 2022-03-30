@@ -5,7 +5,7 @@
 
 
 ## Build step
-FROM klinktech/k-box-ci-pipeline-php:7.4 AS builder
+FROM klinktech/k-box-ci-pipeline-php:8.1 AS builder
 
 USER root
 RUN \
@@ -31,7 +31,7 @@ RUN \
     yarn run production
 
 ## Real image build
-FROM php:7.4-fpm AS php
+FROM php:8.1.4-fpm AS php
 
 LABEL maintainer="Alessio <alessio@avsoft.it>" \
   org.label-schema.name="tmitime/time" \
