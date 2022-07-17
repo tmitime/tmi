@@ -5,24 +5,24 @@
     "keywords": ["tmi", "time", "tracking", "projects", "agile", "scrum", "laravel"],
     "license": "MIT",
     "require": {
-        "php": "^7.4|^8.0",
+        "php": "^8.0.2",
         "dyrynda/laravel-model-uuid": "^6.4",
-        "fruitcake/laravel-cors": "^2.0",
-        "guzzlehttp/guzzle": "^7.0.1",
-        "laravel/framework": "^8.54",
-        "laravel/jetstream": "^2.3",
-        "laravel/sanctum": "^2.6",
-        "laravel/tinker": "^2.5",
+        "guzzlehttp/guzzle": "^7.2",
+        "laravel/framework": "^9.0",
+        "laravel/jetstream": "^2.10",
+        "laravel/sanctum": "^2.14.1",
+        "laravel/tinker": "^2.7",
         "livewire/livewire": "^2.5",
-        "oneofftech/laravel-connect-identity": "^0.3"
+        "oneofftech/laravel-connect-identity": "^0.3.2"
     },
     "require-dev": {
-        "facade/ignition": "^2.5",
+        "spatie/laravel-ignition": "^1.0",
         "fakerphp/faker": "^1.9.1",
+        "laravel/pint": "^1.0",
         "laravel/sail": "^1.0.1",
-        "mockery/mockery": "^1.4.2",
-        "nunomaduro/collision": "^5.0",
-        "phpunit/phpunit": "^9.3.3"
+        "mockery/mockery": "^1.4.4",
+        "nunomaduro/collision": "^6.1",
+        "phpunit/phpunit": "^9.5.10"
     },
     "autoload": {
         "psr-4": {
