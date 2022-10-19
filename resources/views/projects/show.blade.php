@@ -82,9 +82,17 @@
                         <li>
                             <a class="underline" href="{{ route('tasks.index', ['project' => $project]) }}">{{ __('View all tasks') }}</a>
                         </li>
+                        <li></li>
                         <li>
-                            <a class="underline" target="_blank" href="{{ route('projects.report', ['project' => $project]) }}">{{ __('Monthly report') }}</a>
+                            <a class="underline" target="_blank" href="{{ route('projects.report', ['project' => $project]) }}">{{ __('Current month report') }}</a>
                         </li>
+                        <li>
+                            <a class="underline" target="_blank" href="{{ route('projects.report', ['project' => $project, 'period' => \App\Enum\ReportingPeriod::PREVIOUS_MONTH->value]) }}">{{ __('Previous month report') }}</a>
+                        </li>
+                        <li>
+                            <a class="underline" target="_blank" href="{{ route('projects.report', ['project' => $project, 'period' => \App\Enum\ReportingPeriod::OVERALL->value]) }}">{{ __('Full project report') }}</a>
+                        </li>
+                        <li></li>
                         @can('create', [\App\Models\Task::class, $project])
                             <li>
                                 <a class="underline" href="{{ route('tasks.import.create', ['project' => $project]) }}">{{ __('Import tasks') }}</a>

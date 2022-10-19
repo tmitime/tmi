@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Enum\ReportingPeriod;
 use App\Models\Project;
 use Carbon\Carbon;
 use Carbon\CarbonInterval;
 use Carbon\CarbonPeriod;
 use DatePeriod;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rules\Enum;
 
 class ReportController extends Controller
 {
@@ -21,12 +23,17 @@ class ReportController extends Controller
     {
         $this->authorize('view', $project);
 
-        $today = today()->toImmutable();
+        $validated = $this->validate($request, [
+            'period' => [new Enum(ReportingPeriod::class)],
+        ]);
 
-        $start_date = new Carbon($today->startOfMonth());
-        $end_date = new Carbon($today->endOfMonth());
+        $requestedPeriod = ReportingPeriod::tryFrom(e($validated['period'] ?? ReportingPeriod::CURRENT_MONTH->value)) ?? ReportingPeriod::CURRENT_MONTH;
 
-        $rawDailySummary = $project->tasks()->period($start_date, $end_date)
+        list($start_date, $end_date) = $requestedPeriod === ReportingPeriod::OVERALL ? [$project->start_at, $project->end_at ?? today()->endOfDay()] :  $this->getPeriod($requestedPeriod);
+
+        $rawDailySummary = $project
+            ->tasks()
+            ->period($start_date, $end_date)
             ->selectRaw('date_format(created_at, "%Y-%m-%d") as day, SUM(duration) as time, GROUP_CONCAT(description SEPARATOR " + ") as activities')
             ->groupBy(['day'])
             ->orderBy('day', 'asc')
@@ -56,10 +63,31 @@ class ReportController extends Controller
             'project' => $project,
             'working_days' => $working_days,
             'remaining_working_days' => $remaining_working_days,
-            'report_name' => __(':Month Report', ['month' => $start_date->localeMonth]),
+            'report_name' => $start_date->isSameMonth($end_date) ? __(':Month Report', ['month' => $start_date->localeMonth]) : __(':Start to :end Report', ['start' => $start_date->localeMonth, 'end' => $end_date->localeMonth]),
             'report_start_at' => $start_date,
             'report_end_at' => $end_date,
             'dailySummary' => $dailySummary,
         ]);
+    }
+
+
+    protected function getPeriod($period)
+    {
+
+        if($period === ReportingPeriod::PREVIOUS_MONTH){
+            $dateWithinLastMonth = today()->subMonthsNoOverflow(1)->toImmutable();
+
+            $start_date = new Carbon($dateWithinLastMonth->startOfMonth());
+            $end_date = new Carbon($dateWithinLastMonth->endOfMonth());
+
+            return [$start_date, $end_date];
+        }
+
+        $today = today()->toImmutable();
+
+        $start_date = new Carbon($today->startOfMonth());
+        $end_date = new Carbon($today->endOfMonth());
+
+        return [$start_date, $end_date];
     }
 }
