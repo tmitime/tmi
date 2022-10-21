@@ -6,6 +6,10 @@
             <x-jet-application-mark class="block h-12 w-auto" />
         </div>
 
+        @if ($errors->any())
+            <x-banner style="danger" :message="$errors->first()" />
+        @endif
+
         <header class="">
             <p class="font-semibold text-2xl text-gray-600 leading-tight">
                 {{ $project->name }}
