@@ -5,7 +5,7 @@
 
 
 ## Build step
-FROM klinktech/k-box-ci-pipeline-php:8.1 AS builder
+FROM klinktech/k-box-ci-pipeline-php:8.2 AS builder
 
 USER root
 RUN \
