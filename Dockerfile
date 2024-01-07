@@ -31,7 +31,7 @@ RUN \
     yarn run production
 
 ## Real image build
-FROM php:8.1.13-fpm AS php
+FROM php:8.1.26-fpm AS php
 
 LABEL maintainer="Alessio <alessio@avsoft.it>" \
   org.label-schema.name="tmitime/time" \
@@ -59,22 +59,10 @@ RUN apt-get update -yqq && \
         gettext \
         supervisor \
         cron \
-        # gdal-bin \ 
-        ## todo: remove gdal
-        ## todo: remove ghostscript and imagemagick as not required
-        # ghostscript \
-        # libmagickwand-dev \
     && docker-php-ext-install -j$(nproc) iconv \
     && docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/include/ \
     && docker-php-ext-install -j$(nproc) gd \
     && docker-php-ext-install bz2 zip exif pdo_mysql bcmath pcntl opcache \
-    ## todo: remove ghostscript and imagemagick as not required
-    # && pecl channel-update pecl.php.net \
-    # && pecl install imagick \
-    # && docker-php-ext-enable imagick \
-    # # Ensure PDF support is enabled in Image Magick
-    # && sed -i -e '/rights="none" pattern="{PS,PDF,XPS}"/ s#<!--##g;s#-->##g;' /etc/ImageMagick-6/policy.xml \
-    # && sed -i -e 's/rights="none" pattern="{PS,PDF,XPS}"/rights="read|write" pattern="PDF"/' /etc/ImageMagick-6/policy.xml \
     && docker-php-source delete \
     && apt-get -y autoremove \
     && apt-get clean \
@@ -91,27 +79,26 @@ RUN locale-gen "en_US.UTF-8" \
 ### The installation procedure is heavily inspired from https://github.com/nginxinc/docker-nginx
 RUN set -e; \
 	NGINX_GPGKEY=573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62; \
-	NGINX_VERSION=1.18.0-1~buster; \
+	NGINX_VERSION=1.20.2-1~bullseye; \
 	found=''; \
 	apt-get update; \
-	apt-get install --no-install-recommends --no-install-suggests -y gnupg1 apt-transport-https ca-certificates; \
+	apt-get install --no-install-recommends --no-install-suggests -y gnupg1 ca-certificates; \
 	for server in \
-		ha.pool.sks-keyservers.net \
 		hkp://keyserver.ubuntu.com:80 \
-		hkp://p80.pool.sks-keyservers.net:80 \
 		pgp.mit.edu \
 	; do \
 		echo "Fetching GPG key $NGINX_GPGKEY from $server"; \
 		apt-key adv --keyserver "$server" --keyserver-options timeout=10 --recv-keys "$NGINX_GPGKEY" && found=yes && break; \
 	done; \
 	test -z "$found" && echo >&2 "error: failed to fetch GPG key $NGINX_GPGKEY" && exit 1; \
-    echo "deb http://nginx.org/packages/debian/ buster nginx" >> /etc/apt/sources.list \
+    echo "deb https://nginx.org/packages/debian/ bullseye nginx" >> /etc/apt/sources.list.d/nginx.list \
 	&& apt-get update \
 	&& apt-get install --no-install-recommends --no-install-suggests -y \
 						ca-certificates \
 						nginx=${NGINX_VERSION} \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    && apt-get remove --purge --auto-remove -y gnupg1  \
+    && apt-get remove --purge --auto-remove -y \
+    && rm -rf /etc/apt/sources.list.d/nginx.list
 
 ## Configure cron to run Laravel scheduler
 RUN echo '* * * * * php /var/www/artisan schedule:run >> /dev/null 2>&1' | crontab -
