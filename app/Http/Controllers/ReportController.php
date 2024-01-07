@@ -25,11 +25,13 @@ class ReportController extends Controller
 
         $validated = $this->validate($request, [
             'period' => [new Enum(ReportingPeriod::class)],
+            'from' => ['required_if:period,custom', 'date', 'before:to'],
+            'to' => ['required_if:period,custom', 'date', 'after:from'],
         ]);
 
         $requestedPeriod = ReportingPeriod::tryFrom(e($validated['period'] ?? ReportingPeriod::CURRENT_MONTH->value)) ?? ReportingPeriod::CURRENT_MONTH;
 
-        list($start_date, $end_date) = $requestedPeriod === ReportingPeriod::OVERALL ? [$project->start_at, $project->end_at ?? today()->endOfDay()] :  $this->getPeriod($requestedPeriod);
+        list($start_date, $end_date) = $requestedPeriod === ReportingPeriod::OVERALL ? [$project->start_at, $project->end_at ?? today()->endOfDay()] :  $this->getPeriod($requestedPeriod, $validated['from'] ?? null, $validated['to'] ?? null);
 
         $rawDailySummary = $project
             ->tasks()
@@ -71,8 +73,14 @@ class ReportController extends Controller
     }
 
 
-    protected function getPeriod($period)
+    protected function getPeriod($period, $from = null, $to = null)
     {
+        if($period === ReportingPeriod::CUSTOM){
+            $start_date = new Carbon($from);
+            $end_date = new Carbon($to);
+
+            return [$start_date, $end_date];
+        }
 
         if($period === ReportingPeriod::PREVIOUS_MONTH){
             $dateWithinLastMonth = today()->subMonthsNoOverflow(1)->toImmutable();
