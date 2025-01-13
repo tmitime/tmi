@@ -62,6 +62,7 @@ jobs:
     - name: Run Testsuite
       env:
         DB_HOST: mariadb
+        DB_USER: forge
         DB_PASSWORD: forge
       run: |
         echo "APP_KEY=" > .env
