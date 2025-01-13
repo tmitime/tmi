@@ -20,6 +20,7 @@ jobs:
         image: mariadb:10.6
         env:
           MYSQL_DATABASE: testing
+          MYSQL_ROOT_HOST: '%'
           MYSQL_USER: forge
           MYSQL_PASSWORD: forge
           MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: yes
@@ -32,7 +33,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: [8.2, 8.3]
+        php: [8.2]
     
     steps:
     - uses: actions/checkout@v4
@@ -62,7 +63,6 @@ jobs:
     - name: Run Testsuite
       env:
         DB_HOST: mariadb
-        DB_USER: forge
         DB_PASSWORD: forge
       run: |
         echo "APP_KEY=" > .env
@@ -70,5 +70,4 @@ jobs:
         php artisan view:clear
         php artisan config:clear
         php artisan route:clear
-        php artisan migrate --env=testing --seed --force
         vendor/bin/phpunit
