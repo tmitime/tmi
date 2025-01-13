@@ -39,13 +39,12 @@ class TrackActivity extends Component
         logs()->info('saveEntry', ['task' => $this->taskForm, 'project' => $this->project]);
 
         // save the task
-        if($this->project){
+        if ($this->project) {
             $this->project->tasks()->create([
                 ...$this->taskForm,
                 ...['user_id' => auth()->user()->getKey()],
             ]);
-        }
-        else {
+        } else {
             Task::create([
                 ...$this->taskForm,
                 ...['user_id' => auth()->user()->getKey()],

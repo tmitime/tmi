@@ -3,12 +3,11 @@
 namespace App\Http\Controllers\Identities\Auth;
 
 use App\Actions\Fortify\CreateNewUser;
-use App\User;
-use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Hash;
 use App\Providers\RouteServiceProvider;
+use App\User;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use Oneofftech\Identities\Auth\RegistersUsersWithIdentity;
 
 class RegisterController extends Controller
@@ -46,7 +45,6 @@ class RegisterController extends Controller
     /**
      * Get a validator for an incoming registration request.
      *
-     * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data)
@@ -61,13 +59,13 @@ class RegisterController extends Controller
     /**
      * Create a new user instance after a valid registration.
      *
-     * @param  array  $data
      * @return \Illuminate\Contracts\Auth\Authenticatable|\App\User
      */
     protected function create(array $data)
     {
         $generated = Str::random(20);
         $input = array_merge($data, ['password' => $generated, 'password_confirmation' => $generated]);
+
         return app(CreateNewUser::class)->create($input);
     }
 }

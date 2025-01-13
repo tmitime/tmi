@@ -7,9 +7,8 @@ use Livewire\Component;
 
 class SocialProfiles extends Component
 {
-
     public ?Collection $identities = null;
-    
+
     public bool $hasIdentities = false;
 
     public function mount()

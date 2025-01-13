@@ -2,14 +2,13 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use Dyrynda\Database\Support\GeneratesUuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Task extends Model
 {
-    use HasFactory, GeneratesUuid;
+    use GeneratesUuid, HasFactory;
 
     protected $fillable = [
         'duration',
@@ -43,7 +42,7 @@ class Task extends Model
     {
         return $this->belongsTo(Project::class);
     }
-    
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -54,7 +53,7 @@ class Task extends Model
         // TODO: get tasks that are = to tmi:Meeting or subclass of it
         return $query->whereIn('type', ['tmi:Meeting']);
     }
-    
+
     public function scopeNotMeeting($query)
     {
         // TODO: get tasks that are = to tmi:Meeting or subclass of it
@@ -75,7 +74,7 @@ class Task extends Model
             ->groupBy(['step', 'day'])
             ->orderBy('day', 'asc');
     }
-    
+
     public function scopeSummaryByMonth($query)
     {
         return $query
@@ -83,7 +82,6 @@ class Task extends Model
             ->groupBy('month')
             ->orderBy('month', 'asc');
     }
-
 
     /**
      * Check if task was updated after creation
@@ -94,7 +92,7 @@ class Task extends Model
             return $this->updated_at->greaterThan($this->created_at);
         });
     }
-    
+
     /**
      * Check if task is of type meeting
      */
@@ -115,6 +113,6 @@ class Task extends Model
             $this->type,
         ];
 
-        return join(';', $atoms);
+        return implode(';', $atoms);
     }
 }

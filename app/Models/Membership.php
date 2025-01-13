@@ -20,7 +20,7 @@ class Membership extends JetstreamMembership
             return __('Team');
         });
     }
-    
+
     protected function roleLabel(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
         return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function ($value) {
@@ -28,12 +28,11 @@ class Membership extends JetstreamMembership
         });
     }
 
-    
     public function isTeamMember()
     {
         return true;
     }
-    
+
     public function isProjectMember()
     {
         return false;

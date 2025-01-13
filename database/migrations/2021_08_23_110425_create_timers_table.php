@@ -17,7 +17,7 @@ class CreateTimersTable extends Migration
             $table->id();
 
             $table->uuid('uuid')->unique();
-            
+
             $table->timestamps();
 
             $table->foreignId('user_id');

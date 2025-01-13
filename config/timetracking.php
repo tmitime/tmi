@@ -9,7 +9,7 @@ return [
     | Default duration for a task in minutes
     |--------------------------------------------------------------------------
     |
-    | The default duration, in minutes, of a 
+    | The default duration, in minutes, of a
     | tracking session or a task
     |
     */

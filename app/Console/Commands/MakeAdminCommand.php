@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands;
 
+use App\Actions\Fortify\CreateNewUser;
 use App\Models\User;
 use Illuminate\Console\Command;
-use App\Actions\Fortify\CreateNewUser;
 use Illuminate\Validation\ValidationException;
 
 class MakeAdminCommand extends Command
@@ -46,45 +46,42 @@ class MakeAdminCommand extends Command
         $email = $this->option('email');
         $name = $this->option('name') ?? $this->getUsernameFrom($email);
         $password = $this->option('password');
-            
+
         if (empty($password) && $this->input->isInteractive()) {
-            $password = $this->secret("Please specify an 8 character password for the administrator");
+            $password = $this->secret('Please specify an 8 character password for the administrator');
         }
 
-        $createUserAction = new CreateNewUser();
+        $createUserAction = new CreateNewUser;
 
-        try{
+        try {
             $user = $createUserAction->create([
                 'name' => $name,
                 'email' => $email,
                 'password' => $password,
                 'password_confirmation' => $password,
             ]);
-            
+
             $user->role = User::ROLE_MANAGER;
             $user->save();
-    
+
             $this->line('');
-            $this->line("TMI Administrator, <comment>$email</comment>, created.");       
+            $this->line("TMI Administrator, <comment>$email</comment>, created.");
             $this->line('');
-    
+
             return self::SUCCESS;
-        }
-        catch(ValidationException $ex)
-        {
-            if($ex->validator->errors()->has('email') && 
-               $ex->validator->errors()->first('email') === 'The email has already been taken.'){
+        } catch (ValidationException $ex) {
+            if ($ex->validator->errors()->has('email') &&
+               $ex->validator->errors()->first('email') === 'The email has already been taken.') {
 
                 $this->line('');
-                $this->error("User already existing");
+                $this->error('User already existing');
                 $this->line('');
 
                 return self::INVALID;
             }
-  
 
             $this->line('');
-            $this->error("Validation errors");
+            $this->error('Validation errors');
             $this->line('');
 
             foreach ($ex->errors() as $key => $messages) {
@@ -104,6 +101,7 @@ class MakeAdminCommand extends Command
     private function getUsernameFrom($email)
     {
         $et_offset = strpos($email, '@');
+
         return $et_offset !== false ? substr($email, 0, $et_offset) : $email;
     }
 }

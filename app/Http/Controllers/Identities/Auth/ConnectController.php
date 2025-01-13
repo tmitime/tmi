@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers\Identities\Auth;
 
-use App\User;
 use App\Http\Controllers\Controller;
-use App\Providers\RouteServiceProvider;
+use App\User;
 use Illuminate\Http\Request;
 use Oneofftech\Identities\Auth\ConnectUserIdentity;
 

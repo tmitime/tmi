@@ -52,7 +52,6 @@ class DeleteProjectForm extends Component
         return $this->redirectPath($deleter);
     }
 
-
     public function render()
     {
         return view('livewire.delete-project-form');

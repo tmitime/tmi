@@ -6,14 +6,12 @@ use App\Models\Project;
 use App\Models\Task;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
 class TaskImportController extends Controller
 {
-
     /**
      * Show the form for creating a new resource.
      *
@@ -38,7 +36,6 @@ class TaskImportController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -52,7 +49,7 @@ class TaskImportController extends Controller
         ]);
 
         $project = $projectValidated['project'] ? Project::findUsingRouteKey($projectValidated['project']) : null;
-        
+
         $this->authorize([Task::class, $project]);
 
         $validated = $this->validate($request, [
@@ -65,18 +62,18 @@ class TaskImportController extends Controller
 
         $user_id = $request->user()->getKey();
 
-        $data = collect(Str::of($validated['tasks'])->split('/[\n\r]+/'))->map(function($line){
-            
-            if(empty($line)){
+        $data = collect(Str::of($validated['tasks'])->split('/[\n\r]+/'))->map(function ($line) {
+
+            if (empty($line)) {
                 return null;
             }
 
             $parsedLine = str_getcsv($line, ';');
-            
+
             return [
                 'date' => $parsedLine[0] ?? null,
                 'unit' => $parsedLine[1] ?? null,
-                'duration' => (float)$parsedLine[2] ?? null,
+                'duration' => (float) $parsedLine[2] ?? null,
                 'description' => $parsedLine[3] ?? null,
                 'type' => $parsedLine[4] ?? null,
             ];
@@ -88,7 +85,7 @@ class TaskImportController extends Controller
                 'tasks.*.description' => 'required|string|max:2500',
                 'tasks.*.duration' => 'required|numeric|min:0',
                 'tasks.*.unit' => 'required|string|in:h,m',
-                'tasks.*.date' => 'required|date|after_or_equal:' . $project->start_at->toDateString(),
+                'tasks.*.date' => 'required|date|after_or_equal:'.$project->start_at->toDateString(),
                 'tasks.*.type' => 'nullable|string|max:200|in:tmi:Task,tmi:Meeting',
             ],
             [],
@@ -100,13 +97,13 @@ class TaskImportController extends Controller
                 'tasks.*.type' => 'type',
             ]
         );
-        
-        if($validator->fails()){
+
+        if ($validator->fails()) {
             $errors = $validator->errors();
 
-            $messages = collect($errors->messages())->groupBy(function($value, $key){
+            $messages = collect($errors->messages())->groupBy(function ($value, $key) {
                 return Str::between($key, '.', '.');
-            })->sortKeys()->mapWithKeys(function($values, $line){
+            })->sortKeys()->mapWithKeys(function ($values, $line) {
 
                 $msg = __('Line :line contain invalid data', [
                     'line' => $line,
@@ -120,7 +117,7 @@ class TaskImportController extends Controller
             ]);
         }
 
-        $toCreate = collect($validator->validated()['tasks'])->map(function($d) use($request){
+        $toCreate = collect($validator->validated()['tasks'])->map(function ($d) use ($request) {
             return [
                 'created_at' => Str::contains($d['date'], ':') ? Carbon::parse($d['date']) : Carbon::parse("{$d['date']} 09:00"),
                 'duration' => $d['unit'] === 'h' ? $d['duration'] * Carbon::MINUTES_PER_HOUR : $d['duration'],
@@ -137,5 +134,4 @@ class TaskImportController extends Controller
             ->with('flash.banner', __('Tasks imported'));
 
     }
-
 }

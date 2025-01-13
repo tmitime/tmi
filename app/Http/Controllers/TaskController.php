@@ -7,7 +7,6 @@ use App\Models\Task;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\DB;
 
 class TaskController extends Controller
 {
@@ -20,7 +19,6 @@ class TaskController extends Controller
     {
         $this->authorize(Task::class);
 
-
         $filters = [
             'user' => $request->user(),
             'project' => $request->has('project') ? Project::findUsingRouteKey($request->input('project')) : null,
@@ -28,7 +26,7 @@ class TaskController extends Controller
 
         $tasks = Task::where('user_id', $request->user()->getKey())
             ->orderBy('created_at', 'DESC')
-            ->when($filters['project'], function($query, $prj){
+            ->when($filters['project'], function ($query, $prj) {
                 return $query->where('project_id', $prj->getKey());
             })
             ->with('project')
@@ -60,7 +58,6 @@ class TaskController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -74,13 +71,13 @@ class TaskController extends Controller
         ]);
 
         $project = $projectValidated['project'] ? Project::findUsingRouteKey($projectValidated['project']) : null;
-        
+
         $this->authorize([Task::class, $project]);
 
         $validated = $this->validate($request, [
             'description' => 'required|string|max:2500',
             'duration' => 'required|integer|min:1',
-            'created_at_date' => $project ? 'required|date|after_or_equal:' . $project->start_at->toDateString() : 'required|date',
+            'created_at_date' => $project ? 'required|date|after_or_equal:'.$project->start_at->toDateString() : 'required|date',
             'created_at_time' => 'required|date_format:H:i:s', // this should accept strings like 16:40 (hours and minutes) and 16:40:10 (hours, minutes and seconds)
             'type' => 'nullable|string|max:250|in:tmi:Task,tmi:Meeting',
         ]);
@@ -94,10 +91,9 @@ class TaskController extends Controller
 
         $task->type = $task->type ?? 'tmi:Task';
 
-        if($project){
+        if ($project) {
             $project->tasks()->save($task);
-        }
-        else {
+        } else {
             $task->save();
         }
 
@@ -110,7 +106,6 @@ class TaskController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Task  $task
      * @return \Illuminate\Http\Response
      */
     public function show(Task $task)
@@ -126,7 +121,6 @@ class TaskController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Task  $task
      * @return \Illuminate\Http\Response
      */
     public function edit(Task $task)
@@ -147,8 +141,6 @@ class TaskController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Task  $task
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Task $task)
@@ -158,20 +150,20 @@ class TaskController extends Controller
         $validated = $this->validate($request, [
             'description' => 'required|string|max:250',
             'duration' => 'required|integer|min:1',
-            'created_at_date' => 'required|date|after_or_equal:' . $task->project->start_at->toDateString(),
+            'created_at_date' => 'required|date|after_or_equal:'.$task->project->start_at->toDateString(),
             'created_at_time' => 'required|date_format:H:i:s', // this should accept strings like 16:40 (hours and minutes) and 16:40:10 (hours, minutes and seconds)
             'type' => 'required|string|max:250|in:tmi:Task,tmi:Meeting',
         ]);
-        
+
         $updated_creation_date = Carbon::parse("{$validated['created_at_date']} {$validated['created_at_time']}");
-        
+
         $task->fill(Arr::only($validated, ['duration', 'type', 'description']));
-        
-        if(abs($task->created_at->diffInSeconds($updated_creation_date)) > Carbon::SECONDS_PER_MINUTE / 2){
+
+        if (abs($task->created_at->diffInSeconds($updated_creation_date)) > Carbon::SECONDS_PER_MINUTE / 2) {
             // Only changing the creation time if the edit is above 30 seconds
             $task->created_at = $updated_creation_date;
         }
-        
+
         $task->save();
 
         return redirect()
@@ -182,7 +174,6 @@ class TaskController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Task  $task
      * @return \Illuminate\Http\Response
      */
     public function destroy(Task $task)
@@ -191,7 +182,7 @@ class TaskController extends Controller
 
         $task->delete();
 
-        if(! $task->project){
+        if (! $task->project) {
             return redirect()
                 ->route('tasks.index')
                 ->with('flash.banner', __('Task deleted'));

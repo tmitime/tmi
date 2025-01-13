@@ -5,7 +5,6 @@ namespace App\Livewire;
 use App\Actions\Project\AddProjectMember;
 use App\Actions\Project\RemoveProjectMember;
 use Illuminate\Support\Facades\Auth;
-use Laravel\Jetstream\Features;
 use Laravel\Jetstream\Jetstream;
 use Laravel\Jetstream\Role;
 use Livewire\Component;
@@ -111,7 +110,6 @@ class ProjectMemberManager extends Component
     /**
      * Remove the currently authenticated user from the project.
      *
-     * @param  \App\Actions\Project\RemoveProjectMember  $remover
      * @return void
      */
     public function leaveProject(RemoveProjectMember $remover)
@@ -145,7 +143,6 @@ class ProjectMemberManager extends Component
     /**
      * Remove a project member from the project.
      *
-     * @param  \App\Actions\Project\RemoveProjectMember  $remover
      * @return void
      */
     public function removeProjectMember(RemoveProjectMember $remover)

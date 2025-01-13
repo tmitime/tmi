@@ -7,10 +7,14 @@ use Livewire\Component;
 
 class ProjectInput extends Component
 {
-    public $query= '';
+    public $query = '';
+
     public array $projects = [];
+
     public ?string $selectedProject;
+
     public int $highlightIndex = 0;
+
     public bool $showDropdown = false;
 
     public function mount()
@@ -20,19 +24,18 @@ class ProjectInput extends Component
         // $this->query = $project['name'];
         //     $this->selectedProject = $project['uuid'];
 
-        if($this->selectedProject){
+        if ($this->selectedProject) {
 
             $prj = Project::findUsingRouteKey($this->selectedProject);
 
-            if($prj){
+            if ($prj) {
                 $this->projects = [$prj];
                 $this->highlightIndex = 0;
                 $this->query = $prj->name;
                 // $this->selectedProject = null;
                 $this->showDropdown = false;
             }
-        }
-        else {
+        } else {
             $this->projects = [];
             $this->highlightIndex = 0;
             $this->query = '';
@@ -61,6 +64,7 @@ class ProjectInput extends Component
     {
         if ($this->highlightIndex === count($this->projects) - 1) {
             $this->highlightIndex = 0;
+
             return;
         }
 
@@ -71,6 +75,7 @@ class ProjectInput extends Component
     {
         if ($this->highlightIndex === 0) {
             $this->highlightIndex = count($this->projects) - 1;
+
             return;
         }
 
@@ -99,8 +104,8 @@ class ProjectInput extends Component
         $user = auth()->user();
 
         $this->projects = Project::take(5)
-            ->when($this->query, function($query, $term){
-                return $query->where('name', 'like', '%' . $term. '%');
+            ->when($this->query, function ($query, $term) {
+                return $query->where('name', 'like', '%'.$term.'%');
             })
             ->withMember($user)
             ->get()

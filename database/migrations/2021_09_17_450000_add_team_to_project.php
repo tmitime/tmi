@@ -23,9 +23,9 @@ class AddTeamToProject extends Migration
         // personal team of the owner. This works as currently
         // a project can have only one owner
 
-        Project::with('owner')->chunk(50, function($projects){
-            $projects->each(function($project){
-                if($personalTeam = $project->owner->personalTeam()){
+        Project::with('owner')->chunk(50, function ($projects) {
+            $projects->each(function ($project) {
+                if ($personalTeam = $project->owner->personalTeam()) {
                     $project->team_id = $personalTeam->getKey();
                     $project->save();
                 }

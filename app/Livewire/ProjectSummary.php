@@ -8,21 +8,20 @@ use Livewire\Component;
 
 class ProjectSummary extends Component
 {
-
     public Project $project;
 
     // attributes to get inputs and configuration externally
     public $start;
-    
+
     public $end;
-    
+
     public $period;
-    
+
     // properties to be used
     public $start_date;
-    
+
     public $end_date;
-    
+
     public $entries;
 
     protected $listeners = ['task.new' => 'refresh'];
@@ -33,10 +32,10 @@ class ProjectSummary extends Component
         // if period or start+end not defined we use the current week
         $today = today()->toImmutable();
 
-        list($weekStartAt, $weekEndAt) = config('timetracking.working_week');
+        [$weekStartAt, $weekEndAt] = config('timetracking.working_week');
         $this->start_date = new Carbon($today->startOfWeek($weekStartAt));
         $this->end_date = new Carbon($today->endOfWeek());
-        
+
         $this->refresh();
     }
 
