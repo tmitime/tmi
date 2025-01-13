@@ -14,24 +14,24 @@
 
 
                 <div class="md:grid md:grid-cols-3 md:gap-6">
-                    <x-jet-section-title>
+                    <x-section-title>
                         <x-slot name="title">{{ __('Project') }}</x-slot>
                         <x-slot name="description">
                             {{ __('Select a project to attach the imported tasks.') }}<br/>
                         </x-slot>
-                    </x-jet-section-title>
+                    </x-section-title>
                 
                     <div class="mt-5 md:mt-0 md:col-span-2">
                         <div class="">
                             <livewire:project-input :selectedProject="old('project', optional($project)->uuid)" />
-                            <x-jet-input-error for="project" class="mt-2" />
+                            <x-input-error for="project" class="mt-2" />
                         </div>
                     </div>
                 </div>
 
 
                 <div class="mt-8 md:grid md:grid-cols-3 md:gap-6">
-                    <x-jet-section-title>
+                    <x-section-title>
                         <x-slot name="title">{{ __('Tasks') }}</x-slot>
                         <x-slot name="description">
                             {{ __('Specify each task to be imported in its own line.') }}<br/>
@@ -39,11 +39,11 @@
                             <code>YYYY-MM-DD;m|h;duration;description</code><br>(<code>m</code> = {{ __('minutes') }}, <code>h</code> = {{ __('hours') }})<br/>
 
                         </x-slot>
-                    </x-jet-section-title>
+                    </x-section-title>
 
                     <div class="mt-5 md:mt-0 md:col-span-2">
         
-                        <x-jet-label for="tasks" value="{{ __('Tasks to import') }}" />
+                        <x-label for="tasks" value="{{ __('Tasks to import') }}" />
                         <textarea id="tasks" name="tasks" class="w-full h-64 border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">{{ old('tasks') }}</textarea>
                         @error('tasks')
                             <div class="text-sm text-red-600 mt-2 space-y-4">
@@ -70,9 +70,9 @@
                         @enderror
 
                         <div class="flex items-center justify-end mt-4">
-                            <x-jet-button class="ml-4">
+                            <x-button class="ml-4">
                                 {{ __('Import') }}
-                            </x-jet-button>
+                            </x-button>
                         </div>
 
                     </div>

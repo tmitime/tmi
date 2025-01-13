@@ -103,7 +103,7 @@
                         @endcan
                     </ul>
 
-                    <x-jet-label>{{ __('Reference') }}</x-jet-label>
+                    <x-label>{{ __('Reference') }}</x-label>
                     <code class="w-full whitespace-nowrap">{{ $project->uuid }}</code>
                 </div>
             </div>

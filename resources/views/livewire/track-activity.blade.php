@@ -3,22 +3,22 @@
     <form action="{{ route('tasks.store') }}" wire:submit.prevent="saveEntry" method="post" class="grid grid-cols-3 gap-4">
 
         <div class="">
-            <x-jet-label for="duration" value="{{ __('Duration (minutes)') }}" />
-            <x-jet-input id="duration" class="block mt-1 w-full" type="number" min="1" name="duration" wire:model.defer="task.duration" required autofocus />
-            <x-jet-input-error for="task.duration" class="mt-2" />
+            <x-label for="duration" value="{{ __('Duration (minutes)') }}" />
+            <x-input id="duration" class="block mt-1 w-full" type="number" min="1" name="duration" wire:model.defer="task.duration" required autofocus />
+            <x-input-error for="task.duration" class="mt-2" />
         </div>
     
         <div class="col-span-2">
-            <x-jet-label for="description" value="{{ __('Activity') }}" />
-            <x-jet-input id="description" class="block mt-1 w-full" type="text" name="description"  wire:model.defer="task.description" autofocus />
-            <x-jet-input-error for="task.description" class="mt-2" />
+            <x-label for="description" value="{{ __('Activity') }}" />
+            <x-input id="description" class="block mt-1 w-full" type="text" name="description"  wire:model.defer="task.description" autofocus />
+            <x-input-error for="task.description" class="mt-2" />
         </div>
     
         <div class="col-span-3 flex space-x-2 items-center">
     
-            <x-jet-button class="">
+            <x-button class="">
                 {{ __('Add activity') }}
-            </x-jet-button>
+            </x-button>
 
             <span wire:loading wire:target="saveEntry">
                 Saving task...

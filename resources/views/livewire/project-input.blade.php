@@ -1,5 +1,5 @@
 <div class="relative">
-    <x-jet-label for="project" class="mb-2">{{ __('Project') }}</x-jet-label>
+    <x-label for="project" class="mb-2">{{ __('Project') }}</x-label>
 
     <div class="relative">
         <input
