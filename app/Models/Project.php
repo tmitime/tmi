@@ -196,12 +196,14 @@ class Project extends Model
         return $this->tasks()->orderBy('created_at', 'desc')->limit(10);
     }
 
-    public function getIsOngoingAttribute()
+    protected function isOngoing(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        $today = today();
-        return $this->start_at->lessThanOrEqualTo($today) &&
-         (is_null($this->end_at) 
-         || (!is_null($this->end_at) && $this->end_at->greaterThan($today)));
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function () {
+            $today = today();
+            return $this->start_at->lessThanOrEqualTo($today) &&
+             (is_null($this->end_at) 
+             || (!is_null($this->end_at) && $this->end_at->greaterThan($today)));
+        });
     }
 
     /**

@@ -51,20 +51,22 @@ class Member extends Pivot
     protected $with = ['user'];
 
 
-    public function getRoleLabelAttribute($value)
+    protected function roleLabel(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        $name = self::$jetstreamInvertedRoleMap[$this->role] ?? null;
-
-        if(!$name){
-            return null;
-        }
-
-        return Jetstream::findRole($name)->name ?? $name;
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function ($value) {
+            $name = self::$jetstreamInvertedRoleMap[$this->role] ?? null;
+            if(!$name){
+                return null;
+            }
+            return Jetstream::findRole($name)->name ?? $name;
+        });
     }
     
-    public function getSourceAttribute($value)
+    protected function source(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        return __('Project');
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function ($value) {
+            return __('Project');
+        });
     }
 
     public function isTeamMember()

@@ -88,17 +88,21 @@ class Task extends Model
     /**
      * Check if task was updated after creation
      */
-    public function getIsEditedAttribute()
+    protected function isEdited(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        return $this->updated_at->greaterThan($this->created_at);
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function () {
+            return $this->updated_at->greaterThan($this->created_at);
+        });
     }
     
     /**
      * Check if task is of type meeting
      */
-    public function getIsMeetingAttribute()
+    protected function isMeeting(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        return $this->type === 'tmi:Meeting';
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function () {
+            return $this->type === 'tmi:Meeting';
+        });
     }
 
     public function toCsv()
