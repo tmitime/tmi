@@ -7,7 +7,7 @@
             class="relative w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
             placeholder="{{ __('Type to search for project...') }}"
             wire:focus.prefetch="fetchAutocomplete"
-            wire:model="query"
+            wire:model.live="query"
             wire:keydown.escape="hideDropdown"
             wire:keydown.tab="hideDropdown"
             wire:blur="hideDropdown"
@@ -16,7 +16,7 @@
             wire:keydown.enter.prevent="selectProject"
         />
 
-        <input type="hidden" name="project" id="project" wire:model="selectedProject">
+        <input type="hidden" name="project" id="project" wire:model.live="selectedProject">
 
         @if ($selectedProject)
             <button type="button" title="{{ __('Clear') }}" class="absolute cursor-pointer top-2 right-2 text-gray-500" wire:click="reset">

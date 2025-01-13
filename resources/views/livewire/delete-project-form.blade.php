@@ -19,7 +19,7 @@
         </div>
 
         <!-- Delete Project Confirmation Modal -->
-        <x-confirmation-modal wire:model="confirmingProjectDeletion">
+        <x-confirmation-modal wire:model.live="confirmingProjectDeletion">
             <x-slot name="title">
                 {{ __('Delete Project') }}
             </x-slot>

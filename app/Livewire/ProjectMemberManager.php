@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Livewire;
 
 use App\Actions\Project\AddProjectMember;
 use App\Actions\Project\RemoveProjectMember;
@@ -105,7 +105,7 @@ class ProjectMemberManager extends Component
 
         $this->project = $this->project->fresh();
 
-        $this->emit('saved');
+        $this->dispatch('saved');
     }
 
     /**

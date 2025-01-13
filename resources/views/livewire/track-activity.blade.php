@@ -1,17 +1,17 @@
 <div>
 
-    <form action="{{ route('tasks.store') }}" wire:submit.prevent="saveEntry" method="post" class="grid grid-cols-3 gap-4">
+    <form action="{{ route('tasks.store') }}" wire:submit="saveEntry" method="post" class="grid grid-cols-3 gap-4">
 
         <div class="">
             <x-label for="duration" value="{{ __('Duration (minutes)') }}" />
-            <x-input id="duration" class="block mt-1 w-full" type="number" min="1" name="duration" wire:model.defer="task.duration" required autofocus />
-            <x-input-error for="task.duration" class="mt-2" />
+            <x-input id="duration" class="block mt-1 w-full" type="number" min="1" name="duration" wire:model.defer="taskForm.duration" required autofocus />
+            <x-input-error for="taskForm.duration" class="mt-2" />
         </div>
     
         <div class="col-span-2">
             <x-label for="description" value="{{ __('Activity') }}" />
-            <x-input id="description" class="block mt-1 w-full" type="text" name="description"  wire:model.defer="task.description" autofocus />
-            <x-input-error for="task.description" class="mt-2" />
+            <x-input id="description" class="block mt-1 w-full" type="text" name="description"  wire:model.defer="taskForm.description" autofocus />
+            <x-input-error for="taskForm.description" class="mt-2" />
         </div>
     
         <div class="col-span-3 flex space-x-2 items-center">
@@ -26,7 +26,7 @@
 
             @if (session()->has('flash.banner'))
             
-                <span wire:loading.remove x-data="{ isVisible: @entangle('showSavedState') }"
+                <span wire:loading.remove x-data="{ isVisible: @entangle('showSavedState').live }"
                 x-init="
                     setTimeout(() => {
                         isVisible = false

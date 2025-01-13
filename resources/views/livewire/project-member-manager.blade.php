@@ -23,7 +23,7 @@
                     <!-- Member Email -->
                     <div class="col-span-6 sm:col-span-4">
                         <x-label for="email" value="{{ __('Email') }}" />
-                        <x-input id="email" type="email" class="mt-1 block w-full" wire:model.defer="addProjectMemberForm.email" />
+                        <x-input id="email" type="email" class="mt-1 block w-full" wire:model="addProjectMemberForm.email" />
                         <x-input-error for="email" class="mt-2" />
                     </div>
 
@@ -130,7 +130,7 @@
     @endif
 
     <!-- Role Management Modal -->
-    <x-dialog-modal wire:model="currentlyManagingRole">
+    <x-dialog-modal wire:model.live="currentlyManagingRole">
         <x-slot name="title">
             {{ __('Manage Role') }}
         </x-slot>
@@ -174,7 +174,7 @@
     </x-dialog-modal>
 
     <!-- Leave Project Confirmation Modal -->
-    <x-confirmation-modal wire:model="confirmingLeavingProject">
+    <x-confirmation-modal wire:model.live="confirmingLeavingProject">
         <x-slot name="title">
             {{ __('Leave Project') }}
         </x-slot>
@@ -195,7 +195,7 @@
     </x-confirmation-modal>
 
     <!-- Remove Project Member Confirmation Modal -->
-    <x-confirmation-modal wire:model="confirmingProjectMemberRemoval">
+    <x-confirmation-modal wire:model.live="confirmingProjectMemberRemoval">
         <x-slot name="title">
             {{ __('Remove Project Member') }}
         </x-slot>
