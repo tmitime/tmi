@@ -76,7 +76,7 @@ class JetstreamServiceProvider extends ServiceProvider
         //     'task:import',
         //     'task:export',
         // ])->description('Owner.');
-        
+
         Jetstream::role('admin', 'Maintainer', [
             'project:read',
             'project:create',
@@ -86,7 +86,7 @@ class JetstreamServiceProvider extends ServiceProvider
             'task:update',
             'task:import',
         ])->description('Help you with management activities.');
-        
+
         Jetstream::role('collaborator', 'Collaborator', [
             'project:read',
             'task:read',
@@ -94,7 +94,7 @@ class JetstreamServiceProvider extends ServiceProvider
             'task:update',
             'task:import',
         ])->description('A member that can track time and see what\'s going on.');
-        
+
         Jetstream::role('guest', 'Guest', [
             'project:read',
             'task:read',
@@ -102,7 +102,7 @@ class JetstreamServiceProvider extends ServiceProvider
             'task:update',
             'task:import',
         ])->description('External users that can see what\'s happening and track only their time.');
-        
+
         Jetstream::role('observer', 'Observer', [
             'project:read',
         ])->description('An external user that can view general reports, e.g. a client that want to see a monthly report.');

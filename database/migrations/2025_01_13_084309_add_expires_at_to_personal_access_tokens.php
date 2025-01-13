@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddTaskType extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,8 @@ class AddTaskType extends Migration
      */
     public function up()
     {
-        Schema::table('tasks', function (Blueprint $table) {
-
-            $table->string('type', 200)->nullable()->index()->after('duration');
-
+        Schema::table('personal_access_tokens', function (Blueprint $table) {
+            $table->timestamp('expires_at')->nullable()->after('last_used_at');
         });
     }
 
@@ -27,8 +25,8 @@ class AddTaskType extends Migration
      */
     public function down()
     {
-        Schema::table('tasks', function (Blueprint $table) {
-            $table->dropColumn('type');
+        Schema::table('personal_access_tokens', function (Blueprint $table) {
+            //
         });
     }
-}
+};

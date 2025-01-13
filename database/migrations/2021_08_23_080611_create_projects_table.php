@@ -15,16 +15,16 @@ class CreateProjectsTable extends Migration
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
-            
+
             $table->uuid('uuid')->unique();
-            
+
             $table->string('name', 255);
 
             $table->timestamps();
 
             // When the project starts
             $table->dateTime('start_at');
-            
+
             // When the project ends
             $table->dateTime('end_at')->nullable();
 
@@ -37,7 +37,7 @@ class CreateProjectsTable extends Migration
             // to allow connecting the project to Gitlab
             // to keep it up to date and retrieve issues/tasks
             $table->json('gitlab')->nullable();
-            
+
             // if there is a predefined schedule for hours
             // to work on this project during a working week
             $table->json('schedule')->nullable();

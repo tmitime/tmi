@@ -15,7 +15,7 @@ class CreateTasksTable extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
-            
+
             $table->uuid('uuid')->unique();
 
             $table->timestamps();
@@ -23,13 +23,12 @@ class CreateTasksTable extends Migration
             $table->foreignId('user_id');
 
             $table->foreignId('project_id')->nullable(); // possibility to connect a task to a project later
-            
+
             // Duration of the task in minutes
             $table->integer('duration')->default(1);
 
-
             $table->mediumText('description')->nullable();
-            
+
         });
     }
 

@@ -14,7 +14,6 @@ class UserAvatarController extends Controller
      * Pretty basic avatar generator using SVG
      * Avatar style by https://github.com/eddiejibson/avatars
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function __invoke(Request $request, $avatar = null)
@@ -42,12 +41,11 @@ class UserAvatarController extends Controller
             <text x="50%" y="50%" dy=".1em" fill="{$foreground}" text-anchor="middle" dominant-baseline="middle" style="font-family: &quot;Montserrat&quot;, sans-serif; font-size: 250px; line-height: 1">{$initials}</text>
         </svg>
         SVG;
-        
 
         return response()->make($svg, 200, [
-                'Content-Type' => 'image/svg+xml',
-                'Content-Disposition' => HeaderUtils::makeDisposition(ResponseHeaderBag::DISPOSITION_INLINE, 'user-avatar.svg')
-            ])
+            'Content-Type' => 'image/svg+xml',
+            'Content-Disposition' => HeaderUtils::makeDisposition(ResponseHeaderBag::DISPOSITION_INLINE, 'user-avatar.svg'),
+        ])
             ->setEtag(sha1($svg))
             ->setLastModified();
     }

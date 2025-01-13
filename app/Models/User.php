@@ -2,15 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
-use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Support\Str;
 use Laravel\Jetstream\HasTeams;
+use Laravel\Sanctum\HasApiTokens;
 use Oneofftech\Identities\WithIdentities;
 
 class User extends Authenticatable
@@ -24,7 +22,7 @@ class User extends Authenticatable
     use WithIdentities;
 
     public const ROLE_USER = 10;
-    
+
     public const ROLE_MANAGER = 100;
 
     /**
@@ -57,6 +55,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'password' => 'hashed',
     ];
 
     /**

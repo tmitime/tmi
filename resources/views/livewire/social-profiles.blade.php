@@ -1,8 +1,8 @@
 <div class="md:grid md:grid-cols-3 md:gap-6">
-    <x-jet-section-title>
+    <x-section-title>
         <x-slot name="title">{{ __('Identity providers') }}</x-slot>
         <x-slot name="description">{{ __('Manage the connection and data coming from third party identity providers used to log-in and register.') }}</x-slot>
-    </x-jet-section-title>
+    </x-section-title>
 
     <div class="mt-5 md:mt-0 md:col-span-2">
         <div class="px-4 py-5 bg-white sm:p-6 shadow sm:rounded-md">
@@ -21,7 +21,7 @@
                     
                     <x-oneofftech-identity-link  label="{{ __('Connect your Gitlab profile') }}" action="connect" provider="gitlab" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring focus:ring-gray-300 disabled:opacity-25 transition"/>
 
-                    <x-jet-input-error for="gitlab" class="mt-2" />
+                    <x-input-error for="gitlab" class="mt-2" />
 
                 @endunless
 

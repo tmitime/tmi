@@ -22,7 +22,7 @@ class CreateMembersTable extends Migration
             $table->timestamps();
 
             $table->foreignIdFor(User::class);
-            
+
             $table->foreignIdFor(Project::class);
 
             $table->integer('role')->default(Member::ROLE_GUEST);

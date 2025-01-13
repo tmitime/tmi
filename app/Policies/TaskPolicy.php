@@ -15,7 +15,6 @@ class TaskPolicy
     /**
      * Determine whether the user can view any models.
      *
-     * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function viewAny(User $user)
@@ -26,8 +25,6 @@ class TaskPolicy
     /**
      * Determine whether the user can view the model.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Task  $task
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function view(User $user, Task $task)
@@ -35,26 +32,25 @@ class TaskPolicy
         return $task->user_id == $user->getKey()
             || $user->hasTeamPermission($task->project->team, 'task:read')
             || $task->project->hasMember($user, [
-                    Member::ROLE_MAINTAINER,
-                    Member::ROLE_COLLABORATOR,
-                    Member::ROLE_OWNER,
-                    Member::ROLE_GUEST,
-                ]);
+                Member::ROLE_MAINTAINER,
+                Member::ROLE_COLLABORATOR,
+                Member::ROLE_OWNER,
+                Member::ROLE_GUEST,
+            ]);
     }
 
     /**
      * Determine whether the user can create models.
      *
-     * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user, Project $project = null)
+    public function create(User $user, ?Project $project = null)
     {
-        if(is_null($project)){
+        if (is_null($project)) {
             return true;
         }
 
-        return 
+        return
             $user->hasTeamPermission($project->team, 'task:create') ||
             $project->hasMember($user, [
                 Member::ROLE_MAINTAINER,
@@ -67,52 +63,44 @@ class TaskPolicy
     /**
      * Determine whether the user can update the model.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Task  $task
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function update(User $user, Task $task)
     {
-        return $task->user_id == $user->getKey() || 
+        return $task->user_id == $user->getKey() ||
             $task->project->hasMember($user, Member::ROLE_OWNER);
     }
 
     /**
      * Determine whether the user can delete the model.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Task  $task
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function delete(User $user, Task $task)
     {
-        return $task->user_id == $user->getKey() || 
+        return $task->user_id == $user->getKey() ||
             $task->project->hasMember($user, Member::ROLE_OWNER);
     }
 
     /**
      * Determine whether the user can restore the model.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Task  $task
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function restore(User $user, Task $task)
     {
-        return $task->user_id == $user->getKey() || 
+        return $task->user_id == $user->getKey() ||
             $task->project->hasMember($user, Member::ROLE_OWNER);
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Task  $task
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function forceDelete(User $user, Task $task)
     {
-        return $task->user_id == $user->getKey() || 
+        return $task->user_id == $user->getKey() ||
             $task->project->hasMember($user, Member::ROLE_OWNER);
     }
 }

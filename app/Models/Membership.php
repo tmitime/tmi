@@ -14,22 +14,25 @@ class Membership extends JetstreamMembership
      */
     public $incrementing = true;
 
-    public function getSourceAttribute($value)
+    protected function source(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        return __('Team');
-    }
-    
-    public function getRoleLabelAttribute($value)
-    {
-        return optional(Jetstream::findRole($this->role))->name ?? null;
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function ($value) {
+            return __('Team');
+        });
     }
 
-    
+    protected function roleLabel(): \Illuminate\Database\Eloquent\Casts\Attribute
+    {
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function ($value) {
+            return optional(Jetstream::findRole($this->role))->name ?? null;
+        });
+    }
+
     public function isTeamMember()
     {
         return true;
     }
-    
+
     public function isProjectMember()
     {
         return false;

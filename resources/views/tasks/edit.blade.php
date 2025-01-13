@@ -12,13 +12,13 @@
         <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
 
             <div class="md:grid md:grid-cols-3 md:gap-6">
-                <x-jet-section-title>
+                <x-section-title>
                     <x-slot name="title">{{ __('Task details') }}</x-slot>
                     <x-slot name="description">
                         {{ __('Describe the performed activity and the time it required.') }}<br/>
                         {{ __('Optionally apply a type to easy the grouping') }}
                     </x-slot>
-                </x-jet-section-title>
+                </x-section-title>
 
                 <div class="mt-5 md:mt-0 md:col-span-2">
                     <form action="{{ route('tasks.update', $task) }}" method="post">
@@ -30,24 +30,24 @@
 
                         <div class="flex items-center justify-end mt-4">
 
-                            <x-jet-button class="ml-4">
+                            <x-button class="ml-4">
                                 {{ __('Save task') }}
-                            </x-jet-button>
+                            </x-button>
                         </div>
 
                     </form>
                 </div>
             </div> 
 
-            <x-jet-section-border />
+            <x-section-border />
 
             <div class="md:grid md:grid-cols-3 md:gap-6">
-                <x-jet-section-title>
+                <x-section-title>
                     <x-slot name="title">{{ __('Task history') }}</x-slot>
                     <x-slot name="description">
                         {{ __('History of changes related to the tracked activity.') }}
                     </x-slot>
-                </x-jet-section-title>
+                </x-section-title>
 
                 <div class="mt-5 md:mt-0 md:col-span-2">
 
@@ -59,15 +59,15 @@
                     <p>{{ $task->created_at }} {{ __('Task reported for the first time') }}</p>
                 </div>
             </div> 
-            <x-jet-section-border />
+            <x-section-border />
 
             <div class="md:grid md:grid-cols-3 md:gap-6">
-                <x-jet-section-title>
+                <x-section-title>
                     <x-slot name="title">{{ __('Delete task') }}</x-slot>
                     <x-slot name="description">
                         {{ __('Permanently delete this task.') }}
                     </x-slot>
-                </x-jet-section-title>
+                </x-section-title>
 
                 <div class="mt-5 md:mt-0 md:col-span-2">
 
@@ -75,9 +75,9 @@
                         @method('DELETE')
                         @csrf
 
-                        <x-jet-danger-button type="submit">
+                        <x-danger-button type="submit">
                             {{ __('Delete task') }}
-                        </x-jet-danger-button>
+                        </x-danger-button>
                     </form>
 
 

@@ -4,7 +4,6 @@ namespace App\Actions\Project;
 
 class DeleteProject
 {
-
     public function redirectTo()
     {
         return route('projects.index');

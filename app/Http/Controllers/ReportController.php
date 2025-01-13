@@ -5,9 +5,7 @@ namespace App\Http\Controllers;
 use App\Enum\ReportingPeriod;
 use App\Models\Project;
 use Carbon\Carbon;
-use Carbon\CarbonInterval;
 use Carbon\CarbonPeriod;
-use DatePeriod;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules\Enum;
 
@@ -16,7 +14,6 @@ class ReportController extends Controller
     /**
      * Handle the incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function __invoke(Request $request, Project $project)
@@ -31,7 +28,7 @@ class ReportController extends Controller
 
         $requestedPeriod = ReportingPeriod::tryFrom(e($validated['period'] ?? ReportingPeriod::CURRENT_MONTH->value)) ?? ReportingPeriod::CURRENT_MONTH;
 
-        list($start_date, $end_date) = $requestedPeriod === ReportingPeriod::OVERALL ? [$project->start_at, $project->end_at ?? today()->endOfDay()] :  $this->getPeriod($requestedPeriod, $validated['from'] ?? null, $validated['to'] ?? null);
+        [$start_date, $end_date] = $requestedPeriod === ReportingPeriod::OVERALL ? [$project->start_at, $project->end_at ?? today()->endOfDay()] : $this->getPeriod($requestedPeriod, $validated['from'] ?? null, $validated['to'] ?? null);
 
         $rawDailySummary = $project
             ->tasks()
@@ -43,17 +40,17 @@ class ReportController extends Controller
 
         $periodTotalDuration = $project->tasks()->period($start_date, $end_date)->sum('duration');
 
-        $working_days = $periodTotalDuration > 0 ? round( $periodTotalDuration / Carbon::MINUTES_PER_HOUR / config('timetracking.working_day'), 2) : 0;
-        
-        $remaining_working_days = $project->working_days ? round( $project->working_days - $working_days, 2) : null;
+        $working_days = $periodTotalDuration > 0 ? round($periodTotalDuration / Carbon::MINUTES_PER_HOUR / config('timetracking.working_day'), 2) : 0;
+
+        $remaining_working_days = $project->working_days ? round($project->working_days - $working_days, 2) : null;
 
         $period = CarbonPeriod::since($start_date)->days(1)->until($end_date)->filter('isWeekday');
 
-        $dailySummary = collect($period)->map(function($item) use ($rawDailySummary) {
+        $dailySummary = collect($period)->map(function ($item) use ($rawDailySummary) {
 
             $value = $rawDailySummary->get($item->toDateString());
 
-            /** @var \Carbon\Carbon $item  */
+            /** @var \Carbon\Carbon $item */
             return [
                 'day' => $item,
                 'activities' => optional($value)->activities ?? '',
@@ -72,17 +69,16 @@ class ReportController extends Controller
         ]);
     }
 
-
     protected function getPeriod($period, $from = null, $to = null)
     {
-        if($period === ReportingPeriod::CUSTOM){
+        if ($period === ReportingPeriod::CUSTOM) {
             $start_date = new Carbon($from);
             $end_date = new Carbon($to);
 
             return [$start_date, $end_date];
         }
 
-        if($period === ReportingPeriod::PREVIOUS_MONTH){
+        if ($period === ReportingPeriod::PREVIOUS_MONTH) {
             $dateWithinLastMonth = today()->subMonthsNoOverflow(1)->toImmutable();
 
             $start_date = new Carbon($dateWithinLastMonth->startOfMonth());

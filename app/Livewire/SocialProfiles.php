@@ -1,15 +1,14 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Livewire;
 
 use Illuminate\Support\Collection;
 use Livewire\Component;
 
 class SocialProfiles extends Component
 {
-
     public ?Collection $identities = null;
-    
+
     public bool $hasIdentities = false;
 
     public function mount()

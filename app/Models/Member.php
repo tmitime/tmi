@@ -8,13 +8,13 @@ use Laravel\Jetstream\Jetstream;
 class Member extends Pivot
 {
     // todo: rename to ProjectMembership
-    
+
     public const ROLE_OWNER = 10;
-    
+
     public const ROLE_MAINTAINER = 15;
 
     public const ROLE_COLLABORATOR = 20;
-    
+
     public const ROLE_GUEST = 30;
 
     public const ROLE_OBSERVER = 40;
@@ -25,13 +25,13 @@ class Member extends Pivot
         'guest' => self::ROLE_GUEST,
         'observer' => self::ROLE_OBSERVER,
     ];
-    
+
     protected static $jetstreamInvertedRoleMap = [
-        self::ROLE_OWNER  =>  'owner',
-        self::ROLE_MAINTAINER  =>  'admin',
-        self::ROLE_COLLABORATOR  =>  'collaborator',
-        self::ROLE_GUEST  =>  'guest',
-        self::ROLE_OBSERVER  =>  'observer',
+        self::ROLE_OWNER => 'owner',
+        self::ROLE_MAINTAINER => 'admin',
+        self::ROLE_COLLABORATOR => 'collaborator',
+        self::ROLE_GUEST => 'guest',
+        self::ROLE_OBSERVER => 'observer',
     ];
 
     /**
@@ -41,7 +41,7 @@ class Member extends Pivot
      */
     public $incrementing = true;
 
-    protected $table = "members";
+    protected $table = 'members';
 
     /**
      * The relationships that should always be loaded.
@@ -50,28 +50,30 @@ class Member extends Pivot
      */
     protected $with = ['user'];
 
-
-    public function getRoleLabelAttribute($value)
+    protected function roleLabel(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        $name = self::$jetstreamInvertedRoleMap[$this->role] ?? null;
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function ($value) {
+            $name = self::$jetstreamInvertedRoleMap[$this->role] ?? null;
+            if (! $name) {
+                return null;
+            }
 
-        if(!$name){
-            return null;
-        }
-
-        return Jetstream::findRole($name)->name ?? $name;
+            return Jetstream::findRole($name)->name ?? $name;
+        });
     }
-    
-    public function getSourceAttribute($value)
+
+    protected function source(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        return __('Project');
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function ($value) {
+            return __('Project');
+        });
     }
 
     public function isTeamMember()
     {
         return false;
     }
-    
+
     public function isProjectMember()
     {
         return true;
@@ -96,5 +98,4 @@ class Member extends Pivot
     {
         return self::$jetstreamRoleMap[$role] ?? self::ROLE_GUEST;
     }
-    
 }

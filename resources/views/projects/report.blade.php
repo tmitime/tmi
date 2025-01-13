@@ -3,7 +3,7 @@
     <div class="max-w-4xl p-8 mx-auto">
 
         <div class="mb-6 -ml-2">
-            <x-jet-application-mark class="block h-12 w-auto" />
+            <x-application-mark class="block h-12 w-auto" />
         </div>
 
         @if ($errors->any())

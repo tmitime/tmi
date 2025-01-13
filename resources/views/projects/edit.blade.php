@@ -9,13 +9,13 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
             <div class="md:grid md:grid-cols-3 md:gap-6">
-                <x-jet-section-title>
+                <x-section-title>
                     <x-slot name="title">{{ __('Project details') }}</x-slot>
                     <x-slot name="description">
                         {{ __('Specify the name and the starting date to create a project.') }}<br/>
                         {{ __('You can also indicate the expected working days if planned.') }}
                     </x-slot>
-                </x-jet-section-title>
+                </x-section-title>
 
                 <div class="mt-5 md:mt-0 md:col-span-2">
                     <form action="{{ route('projects.update', $project) }}" method="post">
@@ -29,9 +29,9 @@
                         </div>
 
                         <div class="flex items-center justify-end px-4 py-3 bg-gray-50 text-right sm:px-6 shadow sm:rounded-bl-md sm:rounded-br-md">
-                            <x-jet-button class="ml-4">
+                            <x-button class="ml-4">
                                 {{ __('Update project') }}
-                            </x-jet-button>
+                            </x-button>
                         </div>
                     </form>
                 </div>
@@ -40,7 +40,7 @@
             @livewire('project-member-manager', ['project' => $project])
 
             @if (Gate::check('delete', $project->team))
-                <x-jet-section-border />
+                <x-section-border />
 
                 <div class="mt-10 sm:mt-0">
                     @livewire('delete-project-form', ['project' => $project])

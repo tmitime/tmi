@@ -19,7 +19,7 @@ return [
         'tmi:Meeting' => ['isa' => 'schema:Event', 'subclassof' => 'tmi:Task'],
         'tmi:Review' => ['subclassof' => 'tmi:Task', 'isa' => 'schema:ReviewAction'],
         // 'tmi:RefinementAction' => ['subclassof' => 'schema:Action'],
-        
+
         'scrum:DailyScrum' => ['subclassof' => 'tmi:Meeting'],
         'scrum:Planning' => ['subclassof' => 'tmi:Meeting'],
         'scrum:Review' => ['subclassof' => 'tmi:Meeting'],

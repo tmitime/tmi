@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Livewire;
 
 use App\Models\Project;
 use Livewire\Component;
 
 class TaskList extends Component
 {
-
     public $tasks;
 
     public Project $project;
@@ -28,5 +27,4 @@ class TaskList extends Component
     {
         $this->tasks = optional($this->project)->latestTasks ?? collect();
     }
-
 }

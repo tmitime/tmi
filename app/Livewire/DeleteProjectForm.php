@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Livewire;
 
 use App\Actions\Project\DeleteProject;
 use Illuminate\Support\Facades\Auth;
@@ -51,7 +51,6 @@ class DeleteProjectForm extends Component
 
         return $this->redirectPath($deleter);
     }
-
 
     public function render()
     {

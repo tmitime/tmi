@@ -19,7 +19,8 @@ jobs:
       mariadb:
         image: mariadb:10.6
         env:
-          MYSQL_DATABASE: forge
+          MYSQL_DATABASE: testing
+          MYSQL_ROOT_HOST: '%'
           MYSQL_USER: forge
           MYSQL_PASSWORD: forge
           MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: yes
@@ -32,30 +33,24 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: [8.2]
+        php: [8.2, 8.3]
     
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
       with:
         fetch-depth: 1
-    
+   
     - name: Cache dependencies
-      uses: actions/cache@v1
+      uses: actions/cache@v4
       with:
         path: ~/.composer/cache/files
         key: dependencies-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
 
     - name: Cache JS dependencies
-      uses: actions/cache@v1
+      uses: actions/cache@v4
       with:
         path: ~/.yarn/
         key: dependencies-js-${{ matrix.php }}-yarn-${{ hashFiles('yarn.lock') }}
-    
-    - name: Cache binaries
-      uses: actions/cache@v1
-      with:
-        path: bin
-        key: binaries-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
       
     - name: Prepare environment
       run: |
@@ -75,5 +70,4 @@ jobs:
         php artisan view:clear
         php artisan config:clear
         php artisan route:clear
-        php artisan migrate --env=testing --seed --force
-        vendor/bin/phpunit --verbose
+        vendor/bin/phpunit

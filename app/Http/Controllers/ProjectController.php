@@ -21,7 +21,7 @@ class ProjectController extends Controller
         $user = $request->user();
 
         $team = $user->currentTeam()->first();
-        
+
         return view('projects.index', [
             'projects' => Project::with('members')->ofTeam($team)->get(),
             'team' => $team,
@@ -36,14 +36,13 @@ class ProjectController extends Controller
     public function create()
     {
         $this->authorize(Project::class);
-        
+
         return view('projects.create');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -58,16 +57,16 @@ class ProjectController extends Controller
             'working_days' => 'nullable|integer|min:1',
         ]);
 
-        $prj = DB::transaction(function() use ($validated, $request){
+        $prj = DB::transaction(function () use ($validated, $request) {
 
             $team = $request->user()->currentTeam->getKey();
-            
+
             $project = Project::create(array_merge($validated, ['team_id' => $team]));
 
             $project->members()->attach([
                 $request->user()->getKey() => [
-                    'role' => Member::ROLE_OWNER
-                ]
+                    'role' => Member::ROLE_OWNER,
+                ],
             ]);
 
             return $project;
@@ -82,7 +81,6 @@ class ProjectController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\Response
      */
     public function show(Project $project)
@@ -91,7 +89,7 @@ class ProjectController extends Controller
 
         $project->load([
             'members',
-            'latestTasks'
+            'latestTasks',
         ]);
 
         return view('projects.show', [
@@ -102,7 +100,6 @@ class ProjectController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\Response
      */
     public function edit(Project $project)
@@ -124,8 +121,6 @@ class ProjectController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Project $project)
@@ -141,7 +136,7 @@ class ProjectController extends Controller
         ]);
 
         $project->update($validated);
-        
+
         return redirect()
             ->route('projects.show', $project)
             ->with('flash.banner', __('Project updated.'));
@@ -150,7 +145,6 @@ class ProjectController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\Response
      */
     public function destroy(Project $project)
