@@ -1,3 +1,7 @@
+<p align="left"><img src="https://raw.githubusercontent.com/tmitime/tmi/main/.github/assets/tmi-full-logo.svg" width="300" alt="TMI Time Tracker Logo"></a></p>
+
+[![CI](https://github.com/tmitime/tmi/actions/workflows/ci.yml/badge.svg)](https://github.com/tmitime/tmi/actions/workflows/ci.yml) [![Build Docker Image](https://github.com/tmitime/tmi/actions/workflows/docker.yml/badge.svg)](https://github.com/tmitime/tmi/actions/workflows/docker.yml) ![Docker Image Version](https://img.shields.io/docker/v/tmitime/tmi?sort=semver)
+
 
 # About TMI
 
@@ -10,7 +14,8 @@ you worked more hours than planned.
 
 Time tracking should be simple and integrated in your workflow. 
 
-🚧 **TMI is a work in progress**. Please, try it out and report back using [Discussions](https://github.com/tmitime/tmi/discussions).
+> [!IMPORTANT]
+> TMI Time Tracker is under development, some documentation might be missing. Can be used in production. Feel free to leave feedback via [GitHub Discussions](https://github.com/tmitime/tmi/discussions).
 
 
 **Current features**
