@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddDescriptionToProject extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -17,7 +17,6 @@ class AddDescriptionToProject extends Migration
             $table->longText('description')->nullable()->after('name');
         });
     }
-
     /**
      * Reverse the migrations.
      *
@@ -29,4 +28,4 @@ class AddDescriptionToProject extends Migration
             $table->dropColumn('text');
         });
     }
-}
+};

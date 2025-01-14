@@ -5,7 +5,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddRoleToUser extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -19,7 +19,6 @@ class AddRoleToUser extends Migration
             $table->integer('role')->default(User::ROLE_USER);
         });
     }
-
     /**
      * Reverse the migrations.
      *
@@ -31,4 +30,4 @@ class AddRoleToUser extends Migration
             $table->dropColumn('role');
         });
     }
-}
+};

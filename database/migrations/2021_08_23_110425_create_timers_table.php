@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTimersTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -25,7 +25,6 @@ class CreateTimersTable extends Migration
             $table->dateTime('started_at');
         });
     }
-
     /**
      * Reverse the migrations.
      *
@@ -35,4 +34,4 @@ class CreateTimersTable extends Migration
     {
         Schema::dropIfExists('timers');
     }
-}
+};

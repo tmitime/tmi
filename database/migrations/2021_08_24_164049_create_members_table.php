@@ -7,7 +7,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMembersTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -28,7 +28,6 @@ class CreateMembersTable extends Migration
             $table->integer('role')->default(Member::ROLE_GUEST);
         });
     }
-
     /**
      * Reverse the migrations.
      *
@@ -38,4 +37,4 @@ class CreateMembersTable extends Migration
     {
         Schema::dropIfExists('members');
     }
-}
+};
