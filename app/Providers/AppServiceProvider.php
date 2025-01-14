@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Identity as ModelsIdentity;
+use App\Models\User;
 use Illuminate\Support\ServiceProvider;
 use Oneofftech\Identities\Facades\Identity;
 
@@ -24,7 +26,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Identity::useIdentityModel('App\\Models\\Identity');
-        Identity::useUserModel('App\\Models\\User');
+        Identity::useIdentityModel(ModelsIdentity::class);
+        Identity::useUserModel(User::class);
     }
 }
