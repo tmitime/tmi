@@ -11,7 +11,7 @@ class ProjectInput extends Component
 
     public array $projects = [];
 
-    public ?string $selectedProject;
+    public ?string $selectedProject = null;
 
     public int $highlightIndex = 0;
 
