@@ -10,6 +10,8 @@
         @livewireStyles
         
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+        <x-favicon />
     </head>
     <body class="font-sans">
         <x-banner />
