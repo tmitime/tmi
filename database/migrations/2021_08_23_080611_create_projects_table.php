@@ -43,6 +43,7 @@ return new class extends Migration
             $table->json('schedule')->nullable();
         });
     }
+
     /**
      * Reverse the migrations.
      *

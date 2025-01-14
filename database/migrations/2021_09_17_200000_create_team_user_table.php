@@ -23,6 +23,7 @@ return new class extends Migration
             $table->unique(['team_id', 'user_id']);
         });
     }
+
     /**
      * Reverse the migrations.
      *

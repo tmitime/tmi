@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('role')->default(User::ROLE_USER);
         });
     }
+
     /**
      * Reverse the migrations.
      *

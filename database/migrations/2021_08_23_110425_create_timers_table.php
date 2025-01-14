@@ -25,6 +25,7 @@ return new class extends Migration
             $table->dateTime('started_at');
         });
     }
+
     /**
      * Reverse the migrations.
      *

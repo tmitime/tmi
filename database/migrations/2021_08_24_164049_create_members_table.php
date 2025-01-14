@@ -28,6 +28,7 @@ return new class extends Migration
             $table->integer('role')->default(Member::ROLE_GUEST);
         });
     }
+
     /**
      * Reverse the migrations.
      *
