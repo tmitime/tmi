@@ -4,7 +4,7 @@ use App\Models\Team;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUsersDefaultTeam extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -31,4 +31,4 @@ class CreateUsersDefaultTeam extends Migration
      * @return void
      */
     public function down() {}
-}
+};
