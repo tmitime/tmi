@@ -16,11 +16,6 @@ class Project extends Model
         'name', 'description', 'start_at', 'end_at', 'working_days', 'team_id',
     ];
 
-    protected $casts = [
-        'start_at' => 'datetime',
-        'end_at' => 'datetime',
-    ];
-
     /**
      * The relationships that should always be loaded.
      *
@@ -221,5 +216,12 @@ class Project extends Model
 
             $this->delete();
         });
+    }
+    protected function casts(): array
+    {
+        return [
+            'start_at' => 'datetime',
+            'end_at' => 'datetime',
+        ];
     }
 }

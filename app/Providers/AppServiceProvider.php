@@ -26,7 +26,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Identity::useIdentityModel(ModelsIdentity::class);
-        Identity::useUserModel(User::class);
+
     }
 }
