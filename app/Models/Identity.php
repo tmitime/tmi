@@ -34,9 +34,7 @@ class Identity extends Model
     {
         return $this->belongsTo(IdentityFacade::userModel());
     }
-    /**
-     * @return array
-     */
+
     protected function casts(): array
     {
         return [

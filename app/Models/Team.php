@@ -32,10 +32,9 @@ class Team extends JetstreamTeam
         'updated' => TeamUpdated::class,
         'deleted' => TeamDeleted::class,
     ];
+
     /**
      * The attributes that should be cast.
-     *
-     * @return array
      */
     protected function casts(): array
     {

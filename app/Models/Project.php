@@ -217,6 +217,7 @@ class Project extends Model
             $this->delete();
         });
     }
+
     protected function casts(): array
     {
         return [

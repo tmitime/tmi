@@ -66,10 +66,9 @@ class User extends Authenticatable
     {
         return route('avatar.show', ['avatar' => bin2hex($this->getKey())]);
     }
+
     /**
      * The attributes that should be cast to native types.
-     *
-     * @return array
      */
     protected function casts(): array
     {
