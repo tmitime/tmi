@@ -10,14 +10,6 @@ class Identity extends Model
     /**
      * @var array
      */
-    protected $casts = [
-        'expires_at' => 'datetime',
-        'registration' => 'bool',
-    ];
-
-    /**
-     * @var array
-     */
     protected $fillable = [
         'user_id',
         'provider_id',
@@ -41,5 +33,13 @@ class Identity extends Model
     public function user()
     {
         return $this->belongsTo(IdentityFacade::userModel());
+    }
+
+    protected function casts(): array
+    {
+        return [
+            'expires_at' => 'datetime',
+            'registration' => 'bool',
+        ];
     }
 }

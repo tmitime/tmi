@@ -6,6 +6,9 @@ use App\Models\Team;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Team>
+ */
 class TeamFactory extends Factory
 {
     /**
@@ -23,7 +26,7 @@ class TeamFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->unique()->company(),
+            'name' => fake()->unique()->company(),
             'user_id' => User::factory(),
             'personal_team' => true,
         ];
