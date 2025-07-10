@@ -31,7 +31,7 @@ RUN \
     yarn run production
 
 ## Real image build
-FROM php:8.2.28-fpm-bullseye AS php
+FROM php:8.2.29-fpm-bullseye AS php
 
 LABEL maintainer="Alessio <alessio@avsoft.it>" \
   org.label-schema.name="tmitime/time" \
