@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2804f8b882ee062a941e56ee2c610d84",
+    "content-hash": "edd3a41d42d79958cf4ecd30fb62bd48",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -3231,7 +3231,7 @@
         },
         {
             "name": "oneofftech/laravel-connect-identity",
-            "version": "dev-master",
+            "version": "v0.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/OneOffTech/laravel-connect-identity.git",
@@ -3263,7 +3263,6 @@
                 "orchestra/testbench": "^9.9|^10.0",
                 "phpunit/phpunit": "^10.5|^11.5"
             },
-            "default-branch": true,
             "type": "library",
             "extra": {
                 "laravel": {
@@ -3300,7 +3299,7 @@
             ],
             "support": {
                 "issues": "https://github.com/OneOffTech/laravel-connect-identity/issues",
-                "source": "https://github.com/OneOffTech/laravel-connect-identity/tree/master"
+                "source": "https://github.com/OneOffTech/laravel-connect-identity/tree/v0.5.0"
             },
             "time": "2025-08-03T11:37:14+00:00"
         },
@@ -9404,9 +9403,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "oneofftech/laravel-connect-identity": 20
-    },
+    "stability-flags": {},
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
