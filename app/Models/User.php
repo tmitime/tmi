@@ -49,16 +49,6 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-        'password' => 'hashed',
-    ];
-
-    /**
      * The accessors to append to the model's array form.
      *
      * @var array
@@ -75,5 +65,16 @@ class User extends Authenticatable
     protected function defaultProfilePhotoUrl()
     {
         return route('avatar.show', ['avatar' => bin2hex($this->getKey())]);
+    }
+
+    /**
+     * The attributes that should be cast to native types.
+     */
+    protected function casts(): array
+    {
+        return [
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
+        ];
     }
 }

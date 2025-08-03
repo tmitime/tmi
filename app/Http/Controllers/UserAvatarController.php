@@ -47,6 +47,6 @@ class UserAvatarController extends Controller
             'Content-Disposition' => HeaderUtils::makeDisposition(ResponseHeaderBag::DISPOSITION_INLINE, 'user-avatar.svg'),
         ])
             ->setEtag(sha1($svg))
-            ->setLastModified();
+            ->setLastModified($user?->updated_at ?? now());
     }
 }
