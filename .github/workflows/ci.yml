@@ -15,25 +15,10 @@ jobs:
       image: klinktechnology/k-box-ci-pipeline-php:${{ matrix.php }}
       options: --user root 
 
-    services:
-      mariadb:
-        image: mariadb:10.6
-        env:
-          MYSQL_DATABASE: testing
-          MYSQL_ROOT_HOST: '%'
-          MYSQL_USER: forge
-          MYSQL_PASSWORD: forge
-          MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: yes
-          MYSQL_ALLOW_EMPTY_PASSWORD: yes
-          MYSQL_INITDB_SKIP_TZINFO: 1
-        ports:
-          - 3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-
     strategy:
       fail-fast: true
       matrix:
-        php: [8.2, 8.3]
+        php: [8.3]
     
     steps:
     - uses: actions/checkout@v4
@@ -58,12 +43,9 @@ jobs:
         composer install --prefer-dist
         yarn config set cache-folder ~/.yarn/
         yarn
-        yarn run production
+        yarn build
         
     - name: Run Testsuite
-      env:
-        DB_HOST: mariadb
-        DB_PASSWORD: forge
       run: |
         echo "APP_KEY=" > .env
         php artisan key:generate
