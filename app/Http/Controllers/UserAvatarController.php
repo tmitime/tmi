@@ -22,13 +22,14 @@ class UserAvatarController extends Controller
 
         $user = $user_id ? User::find($user_id) : null;
 
-        $initials = Str::of(optional($user)->name ?? ':(')->limit(2, '')->title();
+        $initials = Str::of(optional($user)->name ?? ':(')->limit(2, '')->title()->transliterate()->ascii();
+        
+        // Unicode subset is equal to latin
 
         $background = '#65A30D';
         $foreground = '#fff';
         $font = url('fonts/montserrat-latin.woff2');
 
-        // TODO: Remeber that the used unicode subset is equal to latin
 
         $svg = <<<"SVG"
         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="font-weight:700;" width="500px" height="500px">
@@ -43,9 +44,9 @@ class UserAvatarController extends Controller
         SVG;
 
         return response()->make($svg, 200, [
-            'Content-Type' => 'image/svg+xml',
-            'Content-Disposition' => HeaderUtils::makeDisposition(ResponseHeaderBag::DISPOSITION_INLINE, 'user-avatar.svg'),
-        ])
+                'Content-Type' => 'image/svg+xml',
+                'Content-Disposition' => HeaderUtils::makeDisposition(ResponseHeaderBag::DISPOSITION_INLINE, 'user-avatar.svg'),
+            ])
             ->setEtag(sha1($svg))
             ->setLastModified($user?->updated_at ?? now());
     }
