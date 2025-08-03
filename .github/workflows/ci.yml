@@ -19,10 +19,9 @@ jobs:
       mariadb:
         image: mariadb:10.11
         env:
-          MYSQL_DATABASE: testing
+          MYSQL_DATABASE: laravel
           MYSQL_ROOT_HOST: '%'
-          MYSQL_USER: forge
-          MYSQL_PASSWORD: forge
+          MYSQL_USER: root
           MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: yes
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
           MYSQL_INITDB_SKIP_TZINFO: 1
@@ -58,12 +57,12 @@ jobs:
         composer install --prefer-dist
         yarn config set cache-folder ~/.yarn/
         yarn
-        yarn run production
+        yarn build
         
     - name: Run Testsuite
       env:
         DB_HOST: mariadb
-        DB_PASSWORD: forge
+        DB_CONNECTION: mysql
       run: |
         echo "APP_KEY=" > .env
         php artisan key:generate
