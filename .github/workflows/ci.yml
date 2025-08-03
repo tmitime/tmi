@@ -15,20 +15,6 @@ jobs:
       image: klinktechnology/k-box-ci-pipeline-php:${{ matrix.php }}
       options: --user root 
 
-    services:
-      mariadb:
-        image: mariadb:10.11
-        env:
-          MYSQL_DATABASE: laravel
-          MYSQL_ROOT_HOST: '%'
-          MYSQL_USER: root
-          MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: yes
-          MYSQL_ALLOW_EMPTY_PASSWORD: yes
-          MYSQL_INITDB_SKIP_TZINFO: 1
-        ports:
-          - 3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-
     strategy:
       fail-fast: true
       matrix:
@@ -60,9 +46,6 @@ jobs:
         yarn build
         
     - name: Run Testsuite
-      env:
-        DB_HOST: mariadb
-        DB_CONNECTION: mysql
       run: |
         echo "APP_KEY=" > .env
         php artisan key:generate
