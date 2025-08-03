@@ -12,7 +12,7 @@ RUN \
     rm -f /usr/local/etc/php/conf.d/docker-php-ext-pcov.ini
 USER $IMAGE_USER
 ENV APP_ENV production
-WORKDIR /var/www
+WORKDIR /var/www/html
 
 COPY --chown=php:php . /var/www/html
 RUN \
