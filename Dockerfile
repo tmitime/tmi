@@ -39,7 +39,7 @@ RUN \
     rm -rf "test"
 
 ## Real image build
-FROM php:8.3.23-fpm-bullseye AS php
+FROM php:8.3.24-fpm-bullseye AS php
 
 LABEL maintainer="Alessio <alessio@avsoft.it>" \
   org.label-schema.name="tmitime/time" \
