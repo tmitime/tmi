@@ -5,7 +5,7 @@
 
 
 ## Build step
-FROM klinktechnology/k-box-ci-pipeline-php:8.3 AS builder
+FROM klinktechnology/k-box-ci-pipeline-php:8.4 AS builder
 
 USER root
 RUN \
@@ -25,8 +25,8 @@ RUN \
     mkdir -p "tests" &&\
     composer install --no-dev --prefer-dist --optimize-autoloader
 RUN \
-    yarn && \
-    yarn build && \
+    npm ci && \
+    npm run build && \
     rm -rf node_modules
 RUN \
     rm -rf "docker" && \
@@ -39,7 +39,7 @@ RUN \
     rm -rf "test"
 
 ## Real image build
-FROM php:8.3.31-fpm-trixie AS php
+FROM php:8.4.21-fpm-trixie AS php
 
 LABEL maintainer="Alessio <alessio@avsoft.it>" \
   org.label-schema.name="tmitime/time" \
