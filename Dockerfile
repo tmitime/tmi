@@ -39,7 +39,7 @@ RUN \
     rm -rf "test"
 
 ## Real image build
-FROM php:8.4.21-fpm-trixie AS php
+FROM php:8.4.23-fpm-trixie AS php
 
 LABEL maintainer="Alessio <alessio@avsoft.it>" \
   org.label-schema.name="tmitime/time" \
